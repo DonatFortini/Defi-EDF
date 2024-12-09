@@ -1,16 +1,72 @@
-# frontend
+# Frontend README
 
-A new Flutter project.
+## Structure du Projet
 
-## Getting Started
+La partie frontend de ce projet est organisée comme suit :
 
-This project is a starting point for a Flutter application.
+```
+lib
+├── core
+│   ├── platform_aware.dart
+│   └── responsive_layout.dart
+├── main.dart
+├── platform
+├── screens
+│   ├── home_screen.dart
+│   ├── mobile_home.dart
+│   └── web_home.dart
+├── services
+│   └── data_services.dart
+└── widgets
+    ├── adaptative_widget.dart
+    └── responsive_builder.dart
+```
 
-A few resources to get you started if this is your first Flutter project:
+### Dossiers et Fichiers
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **core**: Contient les fonctionnalités de base telles que la prise en compte des plateformes et la gestion des mises en page réactives.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  - `platform_aware.dart`: Gère la logique spécifique à la plateforme.
+  - `responsive_layout.dart`: Gère les configurations de mise en page réactive.
+
+- **main.dart**: Le point d'entrée de l'application.
+
+- **platform**: Contient les implémentations spécifiques à la plateforme (actuellement vide).
+
+- **screens**: Contient les différentes écrans de l'application.
+
+  - `home_screen.dart`: L'écran d'accueil principal.
+  - `mobile_home.dart`: Mise en page de l'écran d'accueil pour les appareils mobiles.
+  - `web_home.dart`: Mise en page de l'écran d'accueil pour le web.
+
+- **services**: Contient les classes de service pour la gestion des données.
+
+  - `data_services.dart`: Gère la récupération et le traitement des données.
+
+- **widgets**: Contient des widgets réutilisables.
+  - `adaptative_widget.dart`: Un widget qui s'adapte aux différentes plateformes.
+  - `responsive_builder.dart`: Un widget constructeur pour le design réactif.
+
+## Pour Commencer
+
+Pour commencer avec la partie frontend de ce projet, suivez ces étapes :
+
+1. **Installer les Dépendances** :
+
+   ```bash
+   flutter pub get
+   ```
+
+2. **Lancer l'Application** :
+   web :
+   ```bash
+   flutter run -d chrome
+   ```
+   android :
+   ```bash
+   flutter run -d android
+   ```
+   ios :
+   ```bash
+   flutter run -d ios
+   ```
