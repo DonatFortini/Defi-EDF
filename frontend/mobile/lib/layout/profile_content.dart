@@ -3,7 +3,7 @@ import 'package:frontend/widgets/profile/header.dart';
 import 'package:frontend/widgets/profile/options_list.dart';
 
 class ProfileContent extends StatelessWidget {
-  const ProfileContent({Key? key}) : super(key: key);
+  const ProfileContent({super.key});
 
   @override
   Widget build(BuildContext context) {
