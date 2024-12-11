@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../core/providers/user_provider.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,10 +83,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Logout'),
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 50),
                   ),
+                  child: Text('Logout'),
                 ),
               ],
             ),

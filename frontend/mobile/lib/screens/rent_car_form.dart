@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../core/providers/rent_car_provider.dart';
 
 class RentCarForm extends StatelessWidget {
+  const RentCarForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
