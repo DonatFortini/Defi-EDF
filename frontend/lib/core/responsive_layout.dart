@@ -11,12 +11,12 @@ class ResponsiveLayout extends StatelessWidget {
   final Widget? web;
 
   const ResponsiveLayout({
-    Key? key,
+    super.key,
     required this.mobile,
     this.tablet,
     this.desktop,
     this.web,
-  }) : super(key: key);
+  });
 
   static DeviceScreenType getDeviceType(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
