@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'core/responsive_layout.dart';
 import 'screens/mobile_home.dart';
-import 'screens/web_home.dart';
+import 'core/providers/rent_car_provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => RentalProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,12 +19,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cross-Platform App',
+      title: 'Fleet Car Management',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ResponsiveLayout(mobile: MobileHomePage(), web: WebHomePage()),
+      home: ResponsiveLayout(mobile: MobileHomePage()),
     );
   }
 }
