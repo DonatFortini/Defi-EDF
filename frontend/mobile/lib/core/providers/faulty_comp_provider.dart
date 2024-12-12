@@ -19,7 +19,6 @@ class FaultyCompProvider extends ChangeNotifier {
   }
 
   void submitReport() {
-    // Ajouter ici la logique pour envoyer les données (par exemple, via une API)
     debugPrint('Composant: $_component');
     debugPrint('Image: ${_image?.path ?? 'Aucune image jointe'}');
   }
