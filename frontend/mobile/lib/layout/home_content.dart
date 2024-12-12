@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/scanner_page.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/core/providers/fleet_stats_provider.dart';
 import 'package:frontend/widgets/home/fleet_stats_display.dart';
@@ -58,7 +59,10 @@ class HomeContent extends StatelessWidget {
           Icons.assignment_return,
           Colors.blue,
           () {
-            // Navigation handled by bottom bar
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ScannerPage()),
+            );
           },
         ),
       ],
