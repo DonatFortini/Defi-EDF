@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/layout/faulty_comp_content.dart';
+
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -95,13 +95,6 @@ class _ScannerPageState extends State<ScannerPage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
-        onPressed: () {
-          _openFaultyComponentModal(context);
-        },
-        child: const Icon(Icons.error, color: Colors.white),
-      ),
     );
   }
 
@@ -109,25 +102,5 @@ class _ScannerPageState extends State<ScannerPage> {
   void dispose() {
     _inputController.dispose();
     super.dispose();
-  }
-
-  void _openFaultyComponentModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: false,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-      ),
-      builder: (_) {
-        return FractionallySizedBox(
-          heightFactor: 0.7,
-          child: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: FaultyCompContent(),
-          ),
-        );
-      },
-    );
   }
 }
