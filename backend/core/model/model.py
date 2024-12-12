@@ -22,7 +22,7 @@ class Model:
         else:
             raise Exception("Type not supported")
 
-    def perform(self, filepath: str, type: int) -> str:
+    def predict(self, filepath: str, type: int) -> str:
         list_allowed = '0123456789AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn-'
         content = self.reader.readtext(filepath, allowlist=list_allowed,adjust_contrast=2.0)
         return self.clean_output(content, type)
