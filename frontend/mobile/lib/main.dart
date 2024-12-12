@@ -5,9 +5,19 @@ import 'package:frontend/core/responsive_layout.dart';
 import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/core/providers/rental_provider.dart';
 import 'package:frontend/core/providers/scanner_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _requestLocationPermission();
   runApp(MyApp());
+}
+
+Future<void> _requestLocationPermission() async {
+  PermissionStatus status = await Permission.location.status;
+  if (!status.isGranted) {
+    await Permission.location.request();
+  }
 }
 
 class MyApp extends StatelessWidget {
