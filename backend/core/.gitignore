@@ -4,7 +4,6 @@ env/
 ENV/
 
 # Datasets
-datasets/
 
 # Python
 __pycache__/

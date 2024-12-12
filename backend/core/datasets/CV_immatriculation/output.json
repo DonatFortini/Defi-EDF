@@ -1,0 +1,87 @@
+[
+  {
+    "path": "datasets/CV_immatriculation/test/test_file1.jpeg",
+    "key_name": "Placeholder string",
+    "file_name": "test_file1.jpeg"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file2.jpeg",
+    "key_name": "Placeholder string",
+    "file_name": "test_file2.jpeg"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file3.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file3.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file4.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file4.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file5.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file5.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file6.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file6.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file7.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file7.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file8.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file8.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file9.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file9.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file10.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file10.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file11.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file11.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file12.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file12.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file13.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file13.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file14.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file14.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file15.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file15.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file16.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file16.png"
+  },
+  {
+    "path": "datasets/CV_immatriculation/test/test_file17.png",
+    "key_name": "Placeholder string",
+    "file_name": "test_file17.png"
+  }
+]
