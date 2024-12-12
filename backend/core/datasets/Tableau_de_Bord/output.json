@@ -1,0 +1,32 @@
+[
+    {
+        "path": "datasets/Tableau_de_Bord/test/tb1.jpeg",
+        "key_name": "Placeholder string",
+        "file_name": "tb1.jpeg"
+    },
+    {
+        "path": "datasets/Tableau_de_Bord/test/tb2.jpeg",
+        "key_name": "Placeholder string",
+        "file_name": "tb2.jpeg"
+    },
+    {
+        "path": "datasets/Tableau_de_Bord/test/tb3.jpeg",
+        "key_name": "Placeholder string",
+        "file_name": "tb3.jpeg"
+    },
+    {
+        "path": "datasets/Tableau_de_Bord/test/tb4.jpeg",
+        "key_name": "Placeholder string",
+        "file_name": "tb4.jpeg"
+    },
+    {
+        "path": "datasets/Tableau_de_Bord/test/tb5.jpeg",
+        "key_name": "Placeholder string",
+        "file_name": "tb5.jpeg"
+    },
+    {
+        "path": "datasets/Tableau_de_Bord/test/tb6.jpeg",
+        "key_name": "Placeholder string",
+        "file_name": "tb6.jpeg"
+    }
+]

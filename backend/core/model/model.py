@@ -1,52 +1,31 @@
 import easyocr
 import json
 import os
-import torch
+import re
+from PIL import Image
 
-# Charger le fichier JSON
-HOME_PATH = os.getcwd()
-print(HOME_PATH)
-json_file_path = f"{HOME_PATH}\\backend\\core\\datasets\\CV_immatriculation\\output.json"  # Remplacez par le chemin vers votre fichier JSON
-output_results = []
+class Model:
+    def __init__(self):
+        self.reader = easyocr.Reader(['fr'], gpu=True)
+        self.home_path = os.getcwd()
+        self.regex = [r"[A-Z]{2}-[0-9]{1,3}-[A-Z]{2}", r"\b\d+\s?(km|KM|Km|kn|Kn)\b"]
 
-# Initialiser le lecteur EasyOCR
-reader = easyocr.Reader(['fr'],gpu=True)  # Langue française
+    def clean_output(self, output: list[tuple], type: int) -> str:
+        if type == 1 or type == 0:
+            for item in output:    
+                item=item[1]
+                if re.match(self.regex[type], item):
+                    if type == 0:
+                        return item if len(item) == 9 else item[:-1]
+                    return item
+            return "No match found"            
+        else:
+            raise Exception("Type not supported")
 
-# Charger les données du JSON
-with open(json_file_path, 'r', encoding='utf-8') as f:
-    images_data = json.load(f)
+    def perform(self, filepath: str, type: int) -> str:
+        list_allowed = '0123456789AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn-'
+        content = self.reader.readtext(filepath, allowlist=list_allowed,adjust_contrast=2.0)
+        return self.clean_output(content, type)
 
-# Boucle pour traiter chaque image
-for entry in images_data:
-    image_path = entry.get("path")
-    file_name = entry.get("file_name")
-    key_name = entry.get("key_name")
 
-    try:
-        # Appliquer EasyOCR à l'image
-        result = reader.readtext(image_path)
-        # Formater le résultat
-        formatted_result = {
-            "file_name": file_name,
-            "key_name": key_name,
-            "detections": [
-                {
-                    "text": text,
-                    "confidence": confidence,
-                    "bounding_box": str(bbox)
-                }
-                for bbox, text, confidence in result
-            ]
-        }
-        # Ajouter au tableau des résultats
-        output_results.append(formatted_result)
-        print(f"Traitement réussi pour l'image : {file_name}")
-    except Exception as e:
-        print(f"Erreur lors du traitement de l'image {file_name} : {e}")
 
-# Sauvegarder les résultats dans un fichier JSON
-output_json_path = f"{HOME_PATH}\\backend\\core\\datasets\\CV_immatriculation\\output_results.json"
-with open(output_json_path, 'w', encoding='utf-8') as f:
-    json.dump(output_results, f, ensure_ascii=False, indent=4)
-
-print(f"Traitement terminé. Résultats sauvegardés dans {output_json_path}")
