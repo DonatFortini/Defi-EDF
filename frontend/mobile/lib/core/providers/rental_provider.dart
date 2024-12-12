@@ -15,6 +15,8 @@ class RentalProvider with ChangeNotifier {
   String? get selectedCar => _selectedCar;
   List<String> get additionalServices => _additionalServices;
 
+  get interventionDuration => null;
+
   void setStartDate(DateTime date) {
     _startDate = date;
     notifyListeners();
@@ -58,4 +60,10 @@ class RentalProvider with ChangeNotifier {
     _additionalServices = [];
     notifyListeners();
   }
+
+  void setTimeSlot(String s) {}
+
+  void setInterventionDate(String value) {}
+
+  void setInterventionDuration(String s) {}
 }

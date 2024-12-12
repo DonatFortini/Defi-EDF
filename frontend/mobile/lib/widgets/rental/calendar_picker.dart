@@ -13,7 +13,7 @@ class RentalCalendarPicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Select Rental Dates & Time',
+          "Reservation d'un vehicule",
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 10),
@@ -21,87 +21,116 @@ class RentalCalendarPicker extends StatelessWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () async {
-                  final pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: rentalProvider.startDate ?? DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                  );
-                  if (pickedDate != null) {
-                    rentalProvider.setStartDate(pickedDate);
-                  }
+                onPressed: () {
+                  rentalProvider.setTimeSlot('Matin');
                 },
-                child: Text(
-                  rentalProvider.startDate != null
-                      ? '${rentalProvider.startDate!.toLocal()}'.split(' ')[0]
-                      : 'Start Date',
-                ),
+                child: const Text('Matin'),
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
-                onPressed: () async {
-                  final pickedTime = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  );
-                  if (pickedTime != null) {
-                    rentalProvider.setStartTime(pickedTime);
-                  }
+                onPressed: () {
+                  rentalProvider.setTimeSlot('Apres-midi');
                 },
-                child: Text(
-                  rentalProvider.startTime != null
-                      ? rentalProvider.startTime!.format(context)
-                      : 'Start Time',
-                ),
+                child: const Text('Apres-midi'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  rentalProvider.setTimeSlot('Journée');
+                },
+                child: const Text('Journée'),
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          "Date d'intervention",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Entrez la date',
+            hintText: 'JJ/MM/AAAA',
+          ),
+          keyboardType: TextInputType.datetime,
+          onChanged: (value) {
+            rentalProvider.setInterventionDate(value);
+          },
+        ),
+        const SizedBox(height: 10),
+        Text(
+          "Durée d'intervention estimée",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          child: DropdownButton<String>(
+            value: rentalProvider.interventionDuration ?? '2 h',
+            onChanged: (String? newValue) {
+              rentalProvider.setInterventionDuration(newValue!);
+            },
+            items:
+                <String>[
+                  '30 min',
+                  '1 h',
+                  '2 h',
+                  '3 h',
+                  '4 h',
+                  '5 h',
+                  '6 h',
+                  '7 h',
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+          ),
         ),
         const SizedBox(height: 10),
         Row(
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () async {
-                  final pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate:
-                        rentalProvider.endDate ??
-                        DateTime.now().add(const Duration(days: 1)),
-                    firstDate: rentalProvider.startDate ?? DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                  );
-                  if (pickedDate != null) {
-                    rentalProvider.setEndDate(pickedDate);
-                  }
+                onPressed: () {
+                  rentalProvider.setInterventionDuration('30 min');
                 },
-                child: Text(
-                  rentalProvider.endDate != null
-                      ? '${rentalProvider.endDate!.toLocal()}'.split(' ')[0]
-                      : 'End Date',
-                ),
+                child: const Text('30 min'),
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
-                onPressed: () async {
-                  final pickedTime = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  );
-                  if (pickedTime != null) {
-                    rentalProvider.setEndTime(pickedTime);
-                  }
+                onPressed: () {
+                  rentalProvider.setInterventionDuration('1 h');
                 },
-                child: Text(
-                  rentalProvider.endTime != null
-                      ? rentalProvider.endTime!.format(context)
-                      : 'End Time',
-                ),
+                child: const Text('1 h'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  rentalProvider.setInterventionDuration('2 h');
+                },
+                child: const Text('2 h'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  rentalProvider.setInterventionDuration('4 h');
+                },
+                child: const Text('4 h'),
               ),
             ),
           ],

@@ -7,45 +7,33 @@ La partie frontend de ce projet est organisée comme suit :
 ```
 lib
 ├── core
+│   ├── providers
 │   ├── platform_aware.dart
 │   └── responsive_layout.dart
 ├── main.dart
-├── platform
+├── layout
 ├── screens
-│   ├── home_screen.dart
-│   ├── mobile_home.dart
-│   └── web_home.dart
+│
 ├── services
 │   └── data_services.dart
 └── widgets
-    ├── adaptative_widget.dart
-    └── responsive_builder.dart
 ```
 
 ### Dossiers et Fichiers
 
 - **core**: Contient les fonctionnalités de base telles que la prise en compte des plateformes et la gestion des mises en page réactives.
 
-  - `platform_aware.dart`: Gère la logique spécifique à la plateforme.
-  - `responsive_layout.dart`: Gère les configurations de mise en page réactive.
+-**providers**:
 
 - **main.dart**: Le point d'entrée de l'application.
 
-- **platform**: Contient les implémentations spécifiques à la plateforme (actuellement vide).
+- **layout**: Disposition des différent widgets sur les pages
 
 - **screens**: Contient les différentes écrans de l'application.
 
-  - `home_screen.dart`: L'écran d'accueil principal.
-  - `mobile_home.dart`: Mise en page de l'écran d'accueil pour les appareils mobiles.
-  - `web_home.dart`: Mise en page de l'écran d'accueil pour le web.
-
 - **services**: Contient les classes de service pour la gestion des données.
 
-  - `data_services.dart`: Gère la récupération et le traitement des données.
-
 - **widgets**: Contient des widgets réutilisables.
-  - `adaptative_widget.dart`: Un widget qui s'adapte aux différentes plateformes.
-  - `responsive_builder.dart`: Un widget constructeur pour le design réactif.
 
 ## Pour Commencer
 

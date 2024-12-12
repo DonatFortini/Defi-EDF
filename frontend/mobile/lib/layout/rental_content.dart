@@ -13,7 +13,7 @@ class RentalContent extends StatelessWidget {
     final rentalProvider = Provider.of<RentalProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Rent a Car')),
+      appBar: AppBar(title: const Text('Louer une voiture')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -21,7 +21,10 @@ class RentalContent extends StatelessWidget {
           children: [
             const RentalCalendarPicker(),
             const SizedBox(height: 20),
-            Text('Select a Car', style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              'Véhicule disponible',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(height: 10),
             const RentalCarSelection(),
             const SizedBox(height: 20),
