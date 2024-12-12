@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Directory containing the photos
-PHOTO_DIR="datasets/CV_immatriculation/test"
-JSON_FILE="datasets/CV_immatriculation/output.json"
+PHOTO_DIR="C:\\Users\\matth\\Documents\\cours_M1\\hackathon\\Defi-EDF\\backend\\core\\datasets\\CV_immatriculation\\test"
+JSON_FILE="C:\\Users\\matth\\Documents\\cours_M1\\hackathon\\Defi-EDF\\backend\\core\\datasets\\CV_immatriculation\\output.json"
 
 # Ensure the directory exists
 if [ ! -d "$PHOTO_DIR" ]; then
