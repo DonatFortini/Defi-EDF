@@ -5,10 +5,10 @@ class ScannerContent extends StatelessWidget {
   final TextEditingController inputController;
 
   const ScannerContent({
-    Key? key,
+    super.key,
     required this.onCameraTap,
     required this.inputController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
