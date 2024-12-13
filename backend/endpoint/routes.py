@@ -167,11 +167,9 @@ def does_user_have_reservation_route(userId: int):
 
 
 @app.route('/Reservation/CarList/<float:distance>', methods=['GET'])
-def recommend_car_route():
+def recommend_car_route(distance: float):
     """Recommander une liste de voitures pour une distance donnée."""
-    distance = validate_positive_number(
-        request.args.get('distance'), "Distance")
-
+    distance = validate_positive_number(distance, "Distance")
     return recommend_car(distance)
 
 
