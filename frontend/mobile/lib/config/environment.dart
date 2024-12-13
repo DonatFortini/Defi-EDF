@@ -10,7 +10,7 @@ class EnvironmentConfig {
     switch (_environment) {
       case Environment.dev:
         _apiUrl =
-            'https://53a5-2a01-cb16-a-4c37-e08b-faf-990b-93c1.ngrok-free.app';
+            'https://c5d6-2a01-cb16-204b-b98-c29a-6910-5b76-8ce.ngrok-free.app';
         break;
       case Environment.staging:
         _apiUrl = 'https://staging-api.edf.fr';
@@ -31,6 +31,8 @@ class EnvironmentConfig {
   static String communauteArticleEndpoint(int idArticle) =>
       'api/public/communaute/$idArticle';
 
+  static String loginEndpoint() => '/api/public/login';
+
   static String get dashboardUrl => '$apiUrl$dashboardEndpoint';
   static String getHistoriqueContactUrl(int idUtilisateur) =>
       '$apiUrl${historiqueContactEndpoint(idUtilisateur)}';
@@ -40,4 +42,7 @@ class EnvironmentConfig {
 
   static String getCommunauteArticle(int idArticle) =>
       '$apiUrl${communauteArticleEndpoint(idArticle)}';
+
+  static String loginRoute(String email, String password) =>
+      '$apiUrl${loginEndpoint()}';
 }

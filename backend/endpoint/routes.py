@@ -3,7 +3,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app import app
 from services.db.export import export_vehicle_mileage_to_csv, export_all_reservations_to_csv
 from services.db.fleet_management import get_fleet, get_fleet_dashboard
-from services.db.user import get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
+from services.db.user import authenticate_user, get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
 from services.OCR import getPlateNumber, getMileage
 from services.calculation import (
     get_CO2_estimation, get_electricity_cost_estimation,
@@ -126,6 +126,25 @@ def validate_user_route():
 
     return validate_user(email, password)
 
+@app.route('/auth/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        if not data or 'email' not in data or 'password' not in data:
+            return jsonify({"error": "Email et mot de passe requis"}), 400
+            
+        print(data)
+
+        result = authenticate_user(data['email'], data['password'])
+        
+        if result["success"]:
+            return jsonify(result["data"])
+        else:
+            return jsonify({"error": result["error"]}), 401
+            
+    except Exception as e:
+        print(f"Erreur lors de la connexion: {str(e)}")
+        return jsonify({"error": "Erreur serveur interne"}), 500
 
 # ---------------------------------------------Réservation--------------------------------------
 
@@ -318,3 +337,4 @@ def export_reservations_with_directory_route(output_directory: str):
         raise BadRequest(f"Répertoire de sortie invalide: {str(e)}")
 
     return export_all_reservations_to_csv(output_directory)
+

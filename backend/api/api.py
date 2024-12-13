@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import httpx
-from typing import Dict
+from typing import Dict, Optional
 
 # Modèles Pydantic correspondant à la structure exacte de l'API Fleet
 class DispoStatus(BaseModel):
@@ -15,6 +15,16 @@ class PropulsionStatus(BaseModel):
 class DashboardResponse(BaseModel):
     dispo: DispoStatus
     propulsion: PropulsionStatus
+
+class LoginRequest(BaseModel):
+   email: str
+   password: str
+
+class LoginResponse(BaseModel):
+   token: str
+   refresh_token: Optional[str] = None
+   user_id: int
+   email: str
 
 app = FastAPI()
 
@@ -78,6 +88,33 @@ async def get_dashboard_with_stats():
                 status_code=503,
                 detail=f"Erreur de connexion au service Fleet: {str(e)}"
             )
+        
+@app.post("/api/public/login")
+async def login(login_data: LoginRequest):
+   try:
+       # Créer un client HTTP
+       async with httpx.AsyncClient() as client:
+           # Faire la requête vers l'API privée
+           response = await client.post(
+               f"{FLEET_API_URL}/auth/login",  # Route privée
+               json={
+                   "email": login_data.email,
+                   "password": login_data.password
+               },
+               headers={
+                   "Content-Type": "application/json"
+               }
+           )
+
+           # Retourner la réponse de l'API privée
+           return response.json()
+           
+   except Exception as e:
+       raise HTTPException(
+           status_code=500,
+           detail=f"Une erreur est survenue: {str(e)}"
+       )
+
 
 if __name__ == "__main__":
     import uvicorn
