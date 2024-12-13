@@ -3,7 +3,10 @@ from services.db.fleet_management import get_fleet, get_fleet_dashboard
 from services.db.user import get_users, get_user_by_id, get_user_name_by_id
 from services.OCR import getPlateNumber, getMileage
 from services.calculation import get_CO2_estimation, get_electricity_cost_estimation, get_gasoline_cost_estimation, get_diesel_cost_estimation, electrical_consumption_estimation, gasoline_consumption_estimation, diesel_consumption_estimation
-
+from services.db.reservation import get_renting
+from services.db.maintenance import get_maintenance
+from services.db.export import export_data
+from services.db.disaster import get_disaster
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -54,6 +57,7 @@ def getMileage(filepath: str):
     return getMileage(filepath)
 
 # ---------------------------------------------Maintenance-------------------------------------
+
 
 
 # ---------------------------------------------calculation-------------------------------------
