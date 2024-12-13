@@ -250,7 +250,7 @@ def get_mileage_for_vehicle_route(vehicle_id: int):
         raise BadRequest("ID véhicule invalide")
     return get_mileage_for_vehicle(vehicle_id)
 
-@app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<source>', methods=['POST'])
+@app.route('/Maintenance/Mileage/<plate_number>/<int:mileage>/<source>', methods=['POST'])
 def updateMileageForVehicle(vehicle_id: int, mileage: int, source: str):
     return update_mileage_for_vehicle(vehicle_id, mileage, source)
 

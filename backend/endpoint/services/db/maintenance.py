@@ -12,10 +12,10 @@ def get_mileage_for_vehicle(vehicle_id: int) -> int:
         raise e
 
 
-def update_mileage_for_vehicle(vehicle_id: int, mileage: int, source: str) -> bool:
+def update_mileage_for_vehicle(plate_number: str, mileage: int, source: str) -> bool:
     try:
-        dbpool.query("UPDATE releve_km SET releve_km = %s and date_releve=% source_releve=% WHERE id_vehicule = %s",
-                     (mileage, Datetime.datetime, source, vehicle_id))
+        dbpool.query("UPDATE releve_km SET releve_km = %s and date_releve=% source_releve=% WHERE immatriculation = %s",
+                     (mileage, Datetime.datetime, source, plate_number))
         return True
     except Exception as e:
         dbpool.query("ROLLBACK")
