@@ -39,28 +39,28 @@ def recommend_car(distance: float):
         # Current date for filtering reservations
         current_date = datetime.now().date()
 
-        result = dbpool.query("SELECT vehicule.id_vehicule, autonomie_theorique, releve_km, nom_modele, immatriculation, type_propulsion, nb_places FROM vehicule JOIN modele ON vehicule.id_modele = modele.id_modele JOIN propulsion ON modele.id_propulsion = propulsion.id_propulsion JOIN releve_km ON vehicule.id_vehicule = releve_km.id_vehicule")
+        result = dbpool.query("SELECT vehicule.id_vehicule, autonomie_theorique, nom_modele, immatriculation, type_propulsion, nb_places FROM vehicule JOIN modele ON vehicule.id_modele = modele.id_modele JOIN propulsion ON modele.id_propulsion = propulsion.id_propulsion")
 
         # Get all reservations for today
         reservations_today = dbpool.query(
-            "SELECT id_vehicule FROM reservation WHERE date_debut <= %s AND date_fin >= %s", [current_date, current_date])
+            "SELECT id_vehicule FROM reservation WHERE date_debut = %s AND date_fin = %s", [current_date, current_date])
 
         reserved_vehicles = {reservation[0]
                              for reservation in reservations_today}
 
-        # Filter out cars currently in reservation
+        
         available_cars = [
             car for car in result
             if car[0] not in reserved_vehicles
         ]
 
         # Filter electric cars meeting the autonomy condition
-        electric_cars = [car for car in available_cars if car[5]
+        electric_cars = [car for car in available_cars if car[4]
                          == 'Electrique' and car[1] >= 2 * distance]
 
         # Filter other cars
-        other_cars = [car for car in available_cars if car[5]
-                      != 'Electrique' or car[1] >= 2 * distance]
+        other_cars = [car for car in available_cars if car[4]
+                      != 'Electrique' and car[1] >= 2 * distance]
 
         # Sort electric cars by autonomie_theorique in descending order
         electric_cars.sort(key=lambda x: x[1], reverse=True)
@@ -74,14 +74,13 @@ def recommend_car(distance: float):
         for car in all_cars:
             response.append({
                 "id_vehicule": car[0],
-                "nom_modele": car[3],
+                "nom_modele": car[2],
                 "autonomie_theorique": car[1],
-                "is_electric": car[5] == 'Electrique',
+                "is_electric": car[4] == 'Electrique',
                 "is_reserved": False,
-                "releve_km": car[2],
-                "immatriculation": car[4],
-                "nb_places": car[6],
-                "priority": car[5] == 'Electrique' and car[1] >= 2 * distance
+                "immatriculation": car[3],
+                "nb_places": car[5],
+                "priority": car[4] == 'Electrique' and car[1] >= 2 * distance
             })
         return response
     except Exception as e:
