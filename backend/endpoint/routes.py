@@ -11,7 +11,7 @@ from services.calculation import (
     electrical_consumption_estimation, gasoline_consumption_estimation,
     diesel_consumption_estimation
 )
-from services.db.reservation import get_reservations_for_user, rent_vehicle
+from services.db.reservation import does_user_have_reservation, get_reservations_for_user, rent_vehicle
 from services.db.maintenance import get_mileage_for_vehicle, maintenance_needed, update_mileage_for_vehicle
 import datetime
 import os
@@ -157,6 +157,13 @@ def rent_vehicle_route(userId: int, vehicleId: int, start_date: str, end_date: s
             "La date de début doit être avant ou égale à la date de fin")
 
     return rent_vehicle(userId, vehicleId, start_date, end_date, nb_places_reservees)
+
+@app.route('/Reservation/Check/<int:userId>', methods=['GET'])
+def does_user_have_reservation_route(userId: int):
+    """Vérifier si l'utilisateur a une réservation pour aujourd'hui."""
+    if userId <= 0:
+        raise BadRequest("ID utilisateur invalide")
+    return does_user_have_reservation(userId)
 
 
 # ---------------------------------------------OCR---------------------------------------------

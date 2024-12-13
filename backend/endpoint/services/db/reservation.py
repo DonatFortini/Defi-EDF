@@ -20,6 +20,16 @@ def rent_vehicle(user_id: int, vehicle_id: int, start_date: Datetime.date, end_d
     except Exception as e:
         dbpool.query("ROLLBACK")
         raise e
+    
+def does_user_have_reservation(user_id: int) -> bool:
+    try:
+        today = Datetime.date.today()
+        result = dbpool.query(
+            "SELECT id_vehicule FROM reservation WHERE id_utilisateur = %s AND date_debut = %s", (user_id, today))
+        return len(result) > 0
+    except Exception as e:
+        dbpool.query("ROLLBACK")
+        raise e
 
 
 
