@@ -8,32 +8,32 @@ def get_users():
         dbpool.query("ROLLBACK")
         raise e
     
-def get_user_by_id(id: int):
+def get_user_by_id(id_utilisateur: int):
     try:
-        result = dbpool.query("SELECT * FROM utilisateur WHERE id = %s", (id,))
+        result = dbpool.query("SELECT * FROM utilisateur WHERE id_utilisateur = %s", (id_utilisateur,))
         return result
     except Exception as e:
         dbpool.query("ROLLBACK")
         raise e
     
-def get_user_name_by_id(id: int):
+def get_user_name_by_id(id_utilisateur: int):
     try:
-        result = dbpool.query("SELECT nom FROM utilisateur WHERE id = %s", (id,))
+        result = dbpool.query("SELECT nom FROM utilisateur WHERE id_utilisateur = %s", (id_utilisateur,))
         return result
     except Exception as e:
         dbpool.query("ROLLBACK")
         raise e
     
-def user_exists(id: int)-> bool:
+def user_exists(id_utilisateur: int) -> bool:
     try:
-        result = dbpool.query("SELECT * FROM utilisateur WHERE id = %s", (id,))
+        result = dbpool.query("SELECT * FROM utilisateur WHERE id_utilisateur = %s", (id_utilisateur,))
         return len(result) > 0
     except Exception as e:
         dbpool.query("ROLLBACK")
 
-def get_user_info(id: int):
+def get_user_info(id_utilisateur: int):
     try:
-        result = dbpool.query("SELECT * FROM utilisateur WHERE id = %s", (id,))
+        result = dbpool.query("SELECT * FROM utilisateur WHERE id_utilisateur = %s", (id_utilisateur,))
         return result
     except Exception as e:
         dbpool.query("ROLLBACK")
