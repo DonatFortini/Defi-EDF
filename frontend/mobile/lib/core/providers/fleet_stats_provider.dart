@@ -1,30 +1,61 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 class FleetStatsProvider extends ChangeNotifier {
-  // Mock data - in a real app, this would come from a backend or database
-  int _totalVehicles = 50;
-  int _electricVehicles = 15;
-  int _availableVehicles = 30;
-  int _rentedVehicles = 20;
+  int _totalVehicles = 0;
+  int _electricVehicles = 0;
+  int _availableVehicles = 0;
+  int _rentedVehicles = 0;
 
-  // Getters
   int get totalVehicles => _totalVehicles;
   int get electricVehicles => _electricVehicles;
   int get availableVehicles => _availableVehicles;
   int get rentedVehicles => _rentedVehicles;
 
-  // Method to update statistics (could be called after fetching from an API)
-  void updateStats({
-    int? totalVehicles,
-    int? electricVehicles,
-    int? availableVehicles,
-    int? rentedVehicles,
+  FleetStatsProvider() {
+    fetchStats();
+  }
+
+  void _updateStats({
+    required int totalVehicles,
+    required int electricVehicles,
+    required int availableVehicles,
+    required int rentedVehicles,
   }) {
-    if (totalVehicles != null) _totalVehicles = totalVehicles;
-    if (electricVehicles != null) _electricVehicles = electricVehicles;
-    if (availableVehicles != null) _availableVehicles = availableVehicles;
-    if (rentedVehicles != null) _rentedVehicles = rentedVehicles;
+    _totalVehicles = totalVehicles;
+    _electricVehicles = electricVehicles;
+    _availableVehicles = availableVehicles;
+    _rentedVehicles = rentedVehicles;
 
     notifyListeners();
+  }
+
+  Future<void> fetchStats() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://17ab-2a01-cb16-a-4c37-cfbf-6ebc-1b63-60bc.ngrok-free.app/api/public/dashboard'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final int totalVehicles =
+            data['propulsion']['electric'] + data['propulsion']['thermic'];
+        final int electricVehicles = data['propulsion']['electric'];
+        final int availableVehicles = data['dispo']['free'];
+        final int rentedVehicles = data['dispo']['leased'];
+
+        _updateStats(
+          totalVehicles: totalVehicles,
+          electricVehicles: electricVehicles,
+          availableVehicles: availableVehicles,
+          rentedVehicles: rentedVehicles,
+        );
+      } else {
+        throw Exception('Failed to load fleet stats');
+      }
+    } catch (e) {
+      // Handle error appropriately
+      print('Error fetching fleet stats: $e');
+    }
   }
 }
