@@ -29,6 +29,13 @@ class ProfileOptionsList extends StatelessWidget {
             // Handle logout logic
           },
         ),
+        ProfileOption(
+          icon: Icons.lock_clock,
+          title: 'Historique',
+          onTap: () {
+            // Handle logout logic
+          },
+        ),
       ],
     );
   }

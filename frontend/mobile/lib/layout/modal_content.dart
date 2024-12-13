@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/layout/faulty_comp_content.dart';
 import 'package:frontend/screens/disaster_page.dart';
+import 'package:frontend/screens/faulty_comp_page.dart';
 import 'package:frontend/screens/rental_page.dart';
 import 'package:frontend/screens/scanner_page.dart';
 import 'package:frontend/widgets/quick_action_card.dart';
@@ -31,7 +33,7 @@ class ModalContent extends StatelessWidget {
             SizedBox(height: 10),
             buildQuickActionCard(
               context,
-              'Rendre une voiture',
+              'a une voiture',
               Icons.assignment_return,
               Colors.blue,
               () {
@@ -54,7 +56,19 @@ class ModalContent extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
+            buildQuickActionCard(
+              context,
+              'Pièces défectueuses',
+              Icons.broken_image_rounded,
+              Colors.orange,
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FaultyCompPage()),
+                );
+              },
+            ),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/rental/roadmap.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/core/providers/rental_provider.dart';
 import 'package:frontend/widgets/rental/calendar_picker.dart';
@@ -20,6 +21,8 @@ class RentalContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const RentalCalendarPicker(),
+            const SizedBox(height: 20),
+            const LocationMapPicker(),
             const SizedBox(height: 20),
             Text(
               'Véhicule disponible',

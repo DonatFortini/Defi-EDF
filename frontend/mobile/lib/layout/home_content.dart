@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/disaster_page.dart';
 import 'package:frontend/screens/scanner_page.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/core/providers/fleet_stats_provider.dart';
@@ -40,9 +41,10 @@ class HomeContent extends StatelessWidget {
   Widget _buildQuickActionSection(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: 20),
         buildQuickActionCard(
           context,
-          'Louer une voiture',
+          'Réserver une voiture',
           Icons.car_rental,
           Colors.green,
           () {
@@ -55,9 +57,9 @@ class HomeContent extends StatelessWidget {
         SizedBox(height: 10),
         buildQuickActionCard(
           context,
-          'Rendre une voiture',
-          Icons.assignment_return,
-          Colors.blue,
+          'a une voiture',
+          Icons.car_crash,
+          Colors.red,
           () {
             Navigator.push(
               context,
@@ -65,6 +67,7 @@ class HomeContent extends StatelessWidget {
             );
           },
         ),
+        SizedBox(height: 20),
       ],
     );
   }

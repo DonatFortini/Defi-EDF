@@ -17,6 +17,8 @@ class RentalProvider with ChangeNotifier {
 
   get interventionDuration => null;
 
+  get timeSlot => null;
+
   void setStartDate(DateTime date) {
     _startDate = date;
     notifyListeners();
