@@ -23,3 +23,19 @@ def get_user_name_by_id(id: int):
     except Exception as e:
         dbpool.query("ROLLBACK")
         raise e
+    
+def user_exists(id: int)-> bool:
+    try:
+        result = dbpool.query("SELECT * FROM utilisateur WHERE id = %s", (id,))
+        return len(result) > 0
+    except Exception as e:
+        dbpool.query("ROLLBACK")
+
+def validate_user(email: str, password: str) -> bool:
+    try:
+        result = dbpool.query("SELECT * FROM utilisateur WHERE email = %s AND password = %s", (email, password))
+        return len(result) > 0
+    except Exception as e:
+        dbpool.query("ROLLBACK")
+        raise e
+    

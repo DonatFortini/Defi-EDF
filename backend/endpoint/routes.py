@@ -1,84 +1,231 @@
+from flask import request, jsonify, make_response
+from werkzeug.exceptions import BadRequest, NotFound
 from app import app
-from services.db.export import export_vehicle_mileage_to_csv, export_reservations_to_csv
+from services.db.export import export_vehicle_mileage_to_csv, export_all_reservations_to_csv
 from services.db.fleet_management import get_fleet, get_fleet_dashboard
-from services.db.user import get_users, get_user_by_id, get_user_name_by_id
+from services.db.user import get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
 from services.OCR import getPlateNumber, getMileage
-from services.calculation import get_CO2_estimation, get_electricity_cost_estimation, get_gasoline_cost_estimation, get_diesel_cost_estimation, electrical_consumption_estimation, gasoline_consumption_estimation, diesel_consumption_estimation
+from services.calculation import (
+    get_CO2_estimation, get_electricity_cost_estimation,
+    get_gasoline_cost_estimation, get_diesel_cost_estimation,
+    electrical_consumption_estimation, gasoline_consumption_estimation,
+    diesel_consumption_estimation
+)
 from services.db.reservation import get_reservations_for_user, rent_vehicle
 from services.db.maintenance import get_mileage_for_vehicle, update_mileage_for_vehicle
+import datetime
+import os
+
+
+def validate_date(date_string):
+    """
+    Valider et analyser une chaîne de date.
+
+    Args:
+        date_string (str): Chaîne de date à valider
+
+    Returns:
+        datetime.date: Date analysée
+
+    Raises:
+        ValueError: Si la date est invalide
+    """
+    try:
+        return datetime.datetime.strptime(date_string, '%Y-%m-%d').date()
+    except ValueError:
+        raise BadRequest("Format de date invalide. Utilisez YYYY-MM-DD.")
+
+
+def validate_positive_number(value, param_name):
+    """
+    Valider qu'un nombre est positif.
+
+    Args:
+        value (int ou float): Nombre à valider
+        param_name (str): Nom du paramètre pour le message d'erreur
+
+    Raises:
+        BadRequest: Si la valeur n'est pas un nombre positif
+    """
+    try:
+        numeric_value = float(value)
+        if numeric_value <= 0:
+            raise BadRequest(f"{param_name} doit être un nombre positif.")
+        return numeric_value
+    except ValueError:
+        raise BadRequest(f"{param_name} invalide. Doit être un nombre.")
 
 
 @app.route('/', methods=['GET'])
 def hello():
-    return 'Hello, World!'
+    """Point de contrôle de santé."""
+    return make_response(jsonify({"message": "Hello, World!"}), 200)
 
-# ---------------------------------------------Fleet---------------------------------------------
+
+# ---------------------------------------------Flotte---------------------------------------------
 
 
 @app.route('/Fleet/', methods=['GET'])
-def getFleet():
-    print(get_fleet())
+def get_fleet_route():
+    """Récupérer les informations de la flotte."""
     return get_fleet()
 
 
 @app.route('/Fleet/dashboard', methods=['GET'])
-def getFleetDashboard():
+def get_fleet_dashboard_route():
+    """Récupérer le tableau de bord de la flotte."""
     return get_fleet_dashboard()
 
 
-# ---------------------------------------------User---------------------------------------------
+# ---------------------------------------------Utilisateur---------------------------------------------
+
 
 @app.route('/Users/', methods=['GET'])
-def getUsers():
+def get_users_route():
+    """Récupérer tous les utilisateurs."""
     return get_users()
 
 
 @app.route('/User/<int:id>', methods=['GET'])
-def getUserById(id):
+def get_user_by_id_route(id):
+    """Récupérer un utilisateur par ID."""
+    if id <= 0:
+        raise BadRequest("ID utilisateur invalide")
     return get_user_by_id(id)
 
 
 @app.route('/User/<int:id>/Name', methods=['GET'])
-def getUserNameById(id):
+def get_user_name_by_id_route(id):
+    """Récupérer le nom d'un utilisateur par ID."""
+    if id <= 0:
+        raise BadRequest("ID utilisateur invalide")
     return get_user_name_by_id(id)
 
 
-# ---------------------------------------------Reservation--------------------------------------
+@app.route('/User/Exists/<int:id>', methods=['GET'])
+def user_exists_route(id: int):
+    """Vérifier si l'utilisateur existe."""
+    if id <= 0:
+        raise BadRequest("ID utilisateur invalide")
+    return user_exists(id)
+
+
+@app.route('/User/Validate', methods=['POST'])
+def validate_user_route():
+    """Valider les informations d'identification de l'utilisateur."""
+    data = request.get_json()
+
+    if not data:
+        raise BadRequest("Aucune donnée fournie")
+
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        raise BadRequest("Email et mot de passe sont requis")
+
+    return validate_user(email, password)
+
+
+# ---------------------------------------------Réservation--------------------------------------
+
 
 @app.route('/Reservation/<int:userId>', methods=['GET'])
-def getReservationsForUser(userId: int):
+def get_reservations_for_user_route(userId: int):
+    """Récupérer les réservations pour un utilisateur spécifique."""
+    if userId <= 0:
+        raise BadRequest("ID utilisateur invalide")
     return get_reservations_for_user(userId)
 
 
 @app.route('/Reservation/Rent/<int:userId>/<int:vehicleId>/<start_date>/<end_date>/<int:nb_places_reservees>', methods=['POST'])
-def rentVehicle(userId: int, vehicleId: int, start_date: str, end_date: str, nb_places_reservees: int):
+def rent_vehicle_route(userId: int, vehicleId: int, start_date: str, end_date: str, nb_places_reservees: int):
+    """Louer un véhicule."""
+    # Valider les entrées
+    if userId <= 0:
+        raise BadRequest("ID utilisateur invalide")
+    if vehicleId <= 0:
+        raise BadRequest("ID véhicule invalide")
+    if nb_places_reservees <= 0:
+        raise BadRequest("Le nombre de places réservées doit être positif")
+
+    start = validate_date(start_date)
+    end = validate_date(end_date)
+
+    if start > end:
+        raise BadRequest(
+            "La date de début doit être avant ou égale à la date de fin")
+
     return rent_vehicle(userId, vehicleId, start_date, end_date, nb_places_reservees)
 
 
 # ---------------------------------------------OCR---------------------------------------------
+
+
 @app.route('/OCR/PlateNumber', methods=['POST'])
-def getPlateNumber(filepath: str):
-    return getPlateNumber(filepath)
+def get_plate_number_route():
+    """Extraire le numéro de plaque à partir du fichier téléchargé."""
+    if 'file' not in request.files:
+        raise BadRequest("Aucun fichier téléchargé")
+
+    file = request.files['file']
+    if file.filename == '':
+        raise BadRequest("Aucun fichier sélectionné")
+
+    filepath = os.path.join('/tmp', file.filename)
+    file.save(filepath)
+
+    try:
+        return getPlateNumber(filepath)
+    finally:
+        os.remove(filepath)
 
 
 @app.route('/OCR/Mileage', methods=['POST'])
-def getMileage(filepath: str):
-    return getMileage(filepath)
+def get_mileage_route():
+    """Extraire le kilométrage à partir du fichier téléchargé."""
+    if 'file' not in request.files:
+        raise BadRequest("Aucun fichier téléchargé")
+
+    file = request.files['file']
+    if file.filename == '':
+        raise BadRequest("Aucun fichier sélectionné")
+
+    filepath = os.path.join('/tmp', file.filename)
+    file.save(filepath)
+
+    try:
+        return getMileage(filepath)
+    finally:
+        os.remove(filepath)
+
 
 # ---------------------------------------------Maintenance-------------------------------------
 
 
 @app.route('/Maintenance/Mileage/<int:vehicle_id>', methods=['GET'])
-def getMileageForVehicle(vehicle_id: int):
+def get_mileage_for_vehicle_route(vehicle_id: int):
+    """Récupérer le kilométrage pour un véhicule spécifique."""
+    if vehicle_id <= 0:
+        raise BadRequest("ID véhicule invalide")
     return get_mileage_for_vehicle(vehicle_id)
 
 
 @app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<source>', methods=['POST'])
-def updateMileageForVehicle(vehicle_id: int, mileage: int, source: str):
+def update_mileage_for_vehicle_route(vehicle_id: int, mileage: int, source: str):
+    """Mettre à jour le kilométrage pour un véhicule spécifique."""
+    if vehicle_id <= 0:
+        raise BadRequest("ID véhicule invalide")
+    if mileage <= 0:
+        raise BadRequest("Le kilométrage doit être un nombre positif")
+    if not source:
+        raise BadRequest("La source ne peut pas être vide")
+
     return update_mileage_for_vehicle(vehicle_id, mileage, source)
 
 
-# ---------------------------------------------calculation-------------------------------------
+# ---------------------------------------------Calcul-------------------------------------
+
 
 @app.route('/Calculation/Co2/<float:distance>', methods=['GET'])
 def getCo2Estimation(distance: float):
@@ -114,26 +261,47 @@ def getGasolineConsumptionEstimation(distance: float):
 def getDieselConsumptionEstimation(distance: float):
     return diesel_consumption_estimation(distance)
 
-# ---------------------------------------------Disaster--------------------------------------
-
 
 # ---------------------------------------------Export--------------------------------------
 
+
 @app.route('/Export/VehicleMileage', methods=['GET'])
-def exportVehicleMileageToCsv():
+def export_vehicle_mileage_route():
+    """Exporter le kilométrage des véhicules en CSV en utilisant le répertoire par défaut."""
     return export_vehicle_mileage_to_csv()
 
 
 @app.route('/Export/VehicleMileage/<output_directory>', methods=['GET'])
-def exportVehicleMileageToCsvWithOutputDirectory(output_directory: str):
+def export_vehicle_mileage_with_directory_route(output_directory: str):
+    """Exporter le kilométrage des véhicules en CSV avec le répertoire spécifié."""
+    if not output_directory:
+        raise BadRequest("Le répertoire de sortie ne peut pas être vide")
+
+    # Valider le chemin du répertoire
+    try:
+        os.makedirs(output_directory, exist_ok=True)
+    except Exception as e:
+        raise BadRequest(f"Répertoire de sortie invalide: {str(e)}")
+
     return export_vehicle_mileage_to_csv(output_directory)
 
 
 @app.route('/Export/Reservations', methods=['GET'])
-def exportReservationsToCsv():
-    return export_reservations_to_csv()
+def export_reservations_route():
+    """Exporter les réservations en CSV en utilisant le répertoire par défaut."""
+    return export_all_reservations_to_csv()
 
 
 @app.route('/Export/Reservations/<output_directory>', methods=['GET'])
-def exportReservationsToCsvWithOutputDirectory(output_directory: str):
-    return export_reservations_to_csv(output_directory)
+def export_reservations_with_directory_route(output_directory: str):
+    """Exporter les réservations en CSV avec le répertoire spécifié."""
+    if not output_directory:
+        raise BadRequest("Le répertoire de sortie ne peut pas être vide")
+
+    # Valider le chemin du répertoire
+    try:
+        os.makedirs(output_directory, exist_ok=True)
+    except Exception as e:
+        raise BadRequest(f"Répertoire de sortie invalide: {str(e)}")
+
+    return export_all_reservations_to_csv(output_directory)
