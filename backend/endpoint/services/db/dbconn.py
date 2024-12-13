@@ -2,9 +2,9 @@ import psycopg2
 
 class DBpool:
     def __init__(self):
-        self.conn = psycopg2.connect("dbname=postgres user=postgres password=motdepasse host=localhost port=19876")
+        self.conn = psycopg2.connect("dbname=postgres user=postgres password=motdepasse host=localhost port=10000")
         self.cur = self.conn.cursor()
-
+    
     def query(self, query_string, params=None):
         try:
             if params:
@@ -19,5 +19,9 @@ class DBpool:
         except Exception as e:
             print(f"Erreur dans l'exécution de la requête: {str(e)}")
             raise e
-        
+
+    def __del__(self):
+        self.cur.close()
+        self.conn.close()
+
 dbpool = DBpool()
