@@ -37,6 +37,8 @@ class EnvironmentConfig {
 
   static String mileageEndpoint() => '/api/upload/mileage';
 
+  static String resaEndpoint() => '';
+
   static String get dashboardUrl => '$apiUrl$dashboardEndpoint';
   static String getHistoriqueContactUrl(int idUtilisateur) =>
       '$apiUrl${historiqueContactEndpoint(idUtilisateur)}';

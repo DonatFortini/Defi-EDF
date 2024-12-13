@@ -216,7 +216,11 @@ def get_plate_number_route():
     file.save(filepath)
 
     try:
-        return getPlateNumber(filepath)
+        plate_number = getPlateNumber(filepath)
+        print("PLATE_NUMBER", plate_number)
+        return jsonify({"plate_number": plate_number}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     finally:
         os.remove(filepath)
 
@@ -235,7 +239,11 @@ def get_mileage_route():
     file.save(filepath)
 
     try:
-        return getMileage(filepath)
+        mileage = getMileage(filepath)
+        print("MILEAGE", mileage)
+        return jsonify({"mileage": mileage}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     finally:
         os.remove(filepath)
 
@@ -250,7 +258,7 @@ def get_mileage_for_vehicle_route(vehicle_id: int):
         raise BadRequest("ID véhicule invalide")
     return get_mileage_for_vehicle(vehicle_id)
 
-@app.route('/Maintenance/Mileage/<plate_number>/<int:mileage>/<source>', methods=['POST'])
+@app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<source>', methods=['POST'])
 def updateMileageForVehicle(vehicle_id: int, mileage: int, source: str):
     return update_mileage_for_vehicle(vehicle_id, mileage, source)
 

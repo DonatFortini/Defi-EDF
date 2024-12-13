@@ -11,13 +11,13 @@ class RentalCarSelection extends StatelessWidget {
 
     final cars = [
       {
-        'brand': 'Toyota',
-        'model': 'Corolla',
-        'range': 600,
-        'seats': 5,
+        'brand': 'Peugeot',
+        'model': 'e208',
+        'range': 340,
+        'seats': 2,
+        'isElectric': true,
         'details': 'Coffre large, Climatisation',
-        'isElectric': false,
-        'fuelLevel': 80,
+        'batteryLevel': 80,
         'available': true,
       },
       {
