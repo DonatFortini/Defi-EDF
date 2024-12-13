@@ -11,7 +11,7 @@ from services.calculation import (
     electrical_consumption_estimation, gasoline_consumption_estimation,
     diesel_consumption_estimation
 )
-from services.db.reservation import does_user_have_reservation, get_reservations_for_user, rent_vehicle
+from services.db.reservation import does_user_have_reservation, get_reservations_for_user, recommend_car, rent_vehicle
 from services.db.maintenance import get_mileage_for_vehicle, maintenance_needed, update_mileage_for_vehicle
 import datetime
 import os
@@ -164,6 +164,15 @@ def does_user_have_reservation_route(userId: int):
     if userId <= 0:
         raise BadRequest("ID utilisateur invalide")
     return does_user_have_reservation(userId)
+
+
+@app.route('/Reservation/CarList/<float:distance>', methods=['GET'])
+def recommend_car_route():
+    """Recommander une liste de voitures pour une distance donnée."""
+    distance = validate_positive_number(
+        request.args.get('distance'), "Distance")
+
+    return recommend_car(distance)
 
 
 # ---------------------------------------------OCR---------------------------------------------
