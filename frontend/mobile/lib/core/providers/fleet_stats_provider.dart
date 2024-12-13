@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:frontend/config/environment.dart';
 
 class FleetStatsProvider extends ChangeNotifier {
   int _totalVehicles = 0;
@@ -33,8 +34,9 @@ class FleetStatsProvider extends ChangeNotifier {
 
   Future<void> fetchStats() async {
     try {
-      final response = await http.get(Uri.parse(
-          'https://17ab-2a01-cb16-a-4c37-cfbf-6ebc-1b63-60bc.ngrok-free.app/api/public/dashboard'));
+      print(EnvironmentConfig.dashboardUrl);
+      final response =
+          await http.get(Uri.parse(EnvironmentConfig.dashboardUrl));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

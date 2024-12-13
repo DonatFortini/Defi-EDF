@@ -8,10 +8,12 @@ import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/core/providers/rental_provider.dart';
 import 'package:frontend/core/providers/scanner_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:frontend/config/environment.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _requestLocationPermission();
+  EnvironmentConfig.initialize(Environment.dev);
   runApp(MyApp());
 }
 
