@@ -30,6 +30,38 @@ def does_user_have_reservation(user_id: int) -> bool:
     except Exception as e:
         dbpool.query("ROLLBACK")
         raise e
+    
+def recommend_car(distance: float):
+    try:
+        result = dbpool.query("SELECT id_vehicule, autonomie, capacite, id_reservation, releve_km, id_modele, id_site, immatriculation, taille_batterie, conso_kw_100 FROM vehicule")
+        electric_cars = [car for car in result if car['autonomie'] >= 2 * distance]
+        other_cars = [car for car in result if car['autonomie'] < 2 * distance]
+
+        # Sort electric cars by autonomy in descending order
+        electric_cars.sort(key=lambda x: x['autonomie'], reverse=True)
+
+        # Sort other cars by the difference between their autonomy and 2 * distance in ascending order
+        other_cars.sort(key=lambda x: 2 * distance - x['autonomie'])
+
+        # Prepare the response dictionary
+        response = []
+        for car in electric_cars + other_cars:
+            is_reserved = bool(car['id_reservation'])
+            response.append({
+                "id_modele": car['id_modele'],
+                "autonomie": car['autonomie'],
+                "is_electric": car['autonomie'] >= 2 * distance,
+                "is_reserved": is_reserved,
+                "releve_km": car['releve_km'],
+                "id_site": car['id_site'],
+                "immatriculation": car['immatriculation'],
+                "taille_batterie": car['taille_batterie'],
+                "conso_kw_100": car['conso_kw_100']
+            })
+        return response
+    except Exception as e:
+        dbpool.query("ROLLBACK")
+        raise e
 
 
 
