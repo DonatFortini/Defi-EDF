@@ -19,6 +19,12 @@ class RentalProvider with ChangeNotifier {
 
   get timeSlot => null;
 
+  int? selectedSeats;
+  void setSelectedSeats(int seats) {
+    selectedSeats = seats;
+    notifyListeners();
+  }
+
   void setStartDate(DateTime date) {
     _startDate = date;
     notifyListeners();

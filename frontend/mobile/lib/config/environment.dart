@@ -23,5 +23,21 @@ class EnvironmentConfig {
 
   static String get apiUrl => _apiUrl;
   static String get dashboardEndpoint => '/api/public/dashboard';
+  // Dans EnvironmentConfig
+  static String historiqueContactEndpoint(int idUtilisateur) =>
+      '/api/public/historique/$idUtilisateur';
+  static String calculationCO2(int idPropulsion) =>
+      '/api/public/calculation/$idPropulsion';
+  static String communauteArticleEndpoint(int idArticle) =>
+      'api/public/communaute/$idArticle';
+
   static String get dashboardUrl => '$apiUrl$dashboardEndpoint';
+  static String getHistoriqueContactUrl(int idUtilisateur) =>
+      '$apiUrl${historiqueContactEndpoint(idUtilisateur)}';
+
+  static String getCalculationCO2(int idPropulsion) =>
+      '$apiUrl${calculationCO2(idPropulsion)}';
+
+  static String getCommunauteArticle(int idArticle) =>
+      '$apiUrl${communauteArticleEndpoint(idArticle)}';
 }

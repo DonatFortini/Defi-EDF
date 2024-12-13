@@ -34,7 +34,6 @@ class FleetStatsProvider extends ChangeNotifier {
 
   Future<void> fetchStats() async {
     try {
-      print(EnvironmentConfig.dashboardUrl);
       final response =
           await http.get(Uri.parse(EnvironmentConfig.dashboardUrl));
 
