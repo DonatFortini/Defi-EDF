@@ -20,3 +20,10 @@ def update_mileage_for_vehicle(vehicle_id: int, mileage: int, source: str) -> bo
     except Exception as e:
         dbpool.query("ROLLBACK")
         raise e
+
+
+def maintenance_needed(vehicle_type: str, mileage: int) -> bool:
+    rate = 15000 if vehicle_type == "thermique" else 25000 if vehicle_type == "hybride" else 20000
+    remaining_mileage = rate - (mileage % rate)
+    return remaining_mileage
+   
