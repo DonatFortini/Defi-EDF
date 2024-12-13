@@ -10,7 +10,7 @@ class EnvironmentConfig {
     switch (_environment) {
       case Environment.dev:
         _apiUrl =
-            'https://c5d6-2a01-cb16-204b-b98-c29a-6910-5b76-8ce.ngrok-free.app';
+            'https://9a00-2a01-cb16-204b-b98-ac62-7a9-19f1-1eb0.ngrok-free.app';
         break;
       case Environment.staging:
         _apiUrl = 'https://staging-api.edf.fr';
@@ -33,6 +33,10 @@ class EnvironmentConfig {
 
   static String loginEndpoint() => '/api/public/login';
 
+  static String plateEndpoint() => '/api/upload/plate-number';
+
+  static String mileageEndpoint() => '/api/upload/mileage';
+
   static String get dashboardUrl => '$apiUrl$dashboardEndpoint';
   static String getHistoriqueContactUrl(int idUtilisateur) =>
       '$apiUrl${historiqueContactEndpoint(idUtilisateur)}';
@@ -45,4 +49,7 @@ class EnvironmentConfig {
 
   static String loginRoute(String email, String password) =>
       '$apiUrl${loginEndpoint()}';
+
+  static String sendPlateRoute() => '$apiUrl${plateEndpoint()}';
+  static String sendMileageRoute() => '$apiUrl${mileageEndpoint()}';
 }

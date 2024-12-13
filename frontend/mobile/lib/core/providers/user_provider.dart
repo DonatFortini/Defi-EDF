@@ -1,18 +1,40 @@
 import 'package:flutter/foundation.dart';
+import 'package:frontend/services/user_service.dart';
 
 class UserProvider with ChangeNotifier {
-  String _name = 'John Doe';
-  String _email = 'john.doe@example.com';
-  String _phoneNumber = '+1 (555) 123-4567';
-  String _driverLicense = 'DL12345678';
+  String _nomUtilisateur = '';
+  String _email = '';
+  String _idUtilisateur = '';
+  bool _isLoading = false;
+  String? _error;
 
-  String get name => _name;
+  String get nomUtilisateur => _nomUtilisateur;
   String get email => _email;
-  String get phoneNumber => _phoneNumber;
-  String get driverLicense => _driverLicense;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
 
-  void updateName(String newName) {
-    _name = newName;
+  Future<void> loadUserData(String token) async {
+    try {
+      _isLoading = true;
+      _error = null;
+      notifyListeners();
+
+      final userData = await UserService.getUserInfo(token);
+
+      _nomUtilisateur = userData.nomUtilisateur;
+      _email = userData.email;
+      _idUtilisateur = userData.idUtilisateur;
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void updateNomUtilisateur(String newName) {
+    _nomUtilisateur = newName;
     notifyListeners();
   }
 
@@ -21,13 +43,8 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePhoneNumber(String newPhoneNumber) {
-    _phoneNumber = newPhoneNumber;
-    notifyListeners();
-  }
-
-  void updateDriverLicense(String newDriverLicense) {
-    _driverLicense = newDriverLicense;
+  void clearError() {
+    _error = null;
     notifyListeners();
   }
 }

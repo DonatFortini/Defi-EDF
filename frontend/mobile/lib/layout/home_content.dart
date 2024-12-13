@@ -63,7 +63,10 @@ class HomeContent extends StatelessWidget {
           () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ScannerPage()),
+              MaterialPageRoute(
+                  builder: (context) => ScannerPage(
+                        isMileageScan: false,
+                      )),
             );
           },
         ),
@@ -76,7 +79,10 @@ class HomeContent extends StatelessWidget {
           () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ScannerPage()),
+              MaterialPageRoute(
+                  builder: (context) => ScannerPage(
+                        isMileageScan: false,
+                      )),
             );
           },
         ),

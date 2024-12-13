@@ -50,7 +50,7 @@ def validate_user(email: str, password: str) -> bool:
 def authenticate_user(email: str, password: str):
     try:
         # Exécuter la requête avec les paramètres
-        result = dbpool.query("SELECT id_utilisateur, email, password FROM utilisateur WHERE email = %s", (email,))
+        result = dbpool.query("SELECT id_utilisateur, nom_utilisateur, email, password FROM utilisateur WHERE email = %s", (email,))
         
         if not result:
             return {
@@ -61,8 +61,9 @@ def authenticate_user(email: str, password: str):
         # Conversion du tuple en dictionnaire
         user = {
             "id_utilisateur": result[0][0],  # Premier élément du tuple
-            "email": result[0][1],           # Deuxième élément
-            "password": result[0][2]         # Troisième élément
+            "nom_utilisateur": result[0][1],  # Premier élément du tuple
+            "email": result[0][2],           # Deuxième élément
+            "password": result[0][3]         # Troisième élément
         }
         
         if user["password"] == password:
@@ -70,7 +71,9 @@ def authenticate_user(email: str, password: str):
                 "success": True,
                 "data": {
                     "token": f"fake_token_{user['id_utilisateur']}",
-                    "email": user["email"]
+                    "email": user["email"],
+                    "id_utilisateur": user["id_utilisateur"],
+                    "nom_utilisateur": user["nom_utilisateur"]
                 }
             }
         

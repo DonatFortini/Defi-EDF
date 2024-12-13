@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:frontend/models/user.dart';
 import 'package:frontend/services/auth_service.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -13,7 +15,6 @@ class AuthProvider extends ChangeNotifier {
   String? get error => _error;
   String? get token => _token;
   bool get isInitialized => _isInitialized;
-
   AuthProvider() {
     checkAuthStatus();
   }
@@ -38,7 +39,6 @@ class AuthProvider extends ChangeNotifier {
         // Sauvegarder dans SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('auth_token', _token!);
-
         _isLoading = false;
         _error = null;
         notifyListeners();

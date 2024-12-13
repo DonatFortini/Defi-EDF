@@ -56,7 +56,6 @@ class MyApp extends StatelessWidget {
           }
 
           return MaterialApp(
-            title: 'Bienvenue _Placeholder_',
             theme: ThemeData(
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -2,7 +2,7 @@ import psycopg2
 
 class DBpool:
     def __init__(self):
-        self.conn = psycopg2.connect("dbname=postgres user=postgres password=motdepasse host=localhost port=10000")
+        self.conn = psycopg2.connect("dbname=postgres user=postgres password=motdepasse host=localhost port=19876")
         self.cur = self.conn.cursor()
     
     def query(self, query_string, params=None):

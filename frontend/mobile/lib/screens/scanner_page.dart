@@ -1,40 +1,49 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
 import 'package:frontend/core/providers/scanner_provider.dart';
-import 'package:frontend/layout/scanner_content.dart';
 
-class ScannerPage extends StatefulWidget {
-  const ScannerPage({super.key});
+class ScannerPage extends StatelessWidget {
+  final bool isMileageScan;
 
-  @override
-  _ScannerPageState createState() => _ScannerPageState();
-}
+  const ScannerPage({super.key, required this.isMileageScan});
 
-class _ScannerPageState extends State<ScannerPage> {
-  final TextEditingController _inputController = TextEditingController();
-
-  Future<void> _takePicture() async {
+  Future<void> _takePicture(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
 
     try {
-      // Launch camera and pick an image
       final XFile? pickedFile = await picker.pickImage(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.rear,
       );
 
       if (pickedFile != null) {
-        // Use Provider to handle image upload
-        await context
-            .read<ScannerProvider>()
-            .takePicture(File(pickedFile.path));
+        final provider = context.read<ScannerProvider>();
+
+        if (isMileageScan) {
+          await provider.scanMileage(File(pickedFile.path));
+        } else {
+          await provider.scanPlate(File(pickedFile.path));
+        }
+
+        if (provider.state == ScannerState.success) {
+          if (!isMileageScan) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ScannerPage(isMileageScan: true),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('All scans completed successfully!')),
+            );
+          }
+        }
       }
     } catch (e) {
-      // Show error using ScaffoldMessenger
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to take picture: $e')),
       );
@@ -42,65 +51,43 @@ class _ScannerPageState extends State<ScannerPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // Listen for scan results and update input field
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ScannerProvider>().addListener(() {
-        final provider = context.read<ScannerProvider>();
-        if (provider.scanResult != null) {
-          _inputController.text = provider.scanResult!;
-        }
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Scanner Page')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Consumer<ScannerProvider>(
-          builder: (context, scannerProvider, child) {
-            // Afficher un indicateur de chargement si l'image est en cours de traitement
-            if (scannerProvider.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      appBar: AppBar(
+        title: Text(isMileageScan ? 'Mileage Scanner' : 'Plate Scanner'),
+      ),
+      body: Consumer<ScannerProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            // Afficher un message d'erreur si l'upload échoue
-            if (scannerProvider.errorMessage != null) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      scannerProvider.errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => scannerProvider.clearScan(),
-                      child: const Text('Réessayer'),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            // Interface utilisateur normale
-            return ScannerContent(
-              onCameraTap: _takePicture,
-              inputController: _inputController,
+          if (provider.errorMessage != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    provider.errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  ElevatedButton(
+                    onPressed: provider.clearState,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             );
-          },
-        ),
+          }
+
+          return Center(
+            child: ElevatedButton(
+              onPressed: () => _takePicture(context),
+              child: const Text('Start Scan'),
+            ),
+          );
+        },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _inputController.dispose();
-    super.dispose();
   }
 }

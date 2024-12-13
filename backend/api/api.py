@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from pydantic import BaseModel
 import httpx
 from typing import Dict, Optional
+import os
+import tempfile
 
 # Modèles Pydantic correspondant à la structure exacte de l'API Fleet
 class DispoStatus(BaseModel):
@@ -114,6 +116,96 @@ async def login(login_data: LoginRequest):
            status_code=500,
            detail=f"Une erreur est survenue: {str(e)}"
        )
+
+@app.post("/api/upload/plate-number")
+async def upload_plate_number(file: UploadFile = File(...)):
+    """
+    Endpoint pour l'extraction du numéro de plaque d'immatriculation
+    à partir d'une image.
+    """
+    try:
+        # Sauvegarde temporaire du fichier
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            temp_file.write(await file.read())
+            temp_file_path = temp_file.name
+
+        try:
+            # Envoi au service OCR
+            async with httpx.AsyncClient() as client:
+                with open(temp_file_path, "rb") as f:
+                    files = {"file": (file.filename, f, file.content_type)}
+                    response = await client.post(
+                        f"{FLEET_API_URL}/OCR/PlateNumber",
+                        files=files,
+                        timeout=30.0
+                    )
+                    response.raise_for_status()
+                    return response.json()
+
+        except httpx.RequestError as e:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Erreur de connexion au service OCR: {str(e)}"
+            )
+        except httpx.HTTPStatusError as e:
+            raise HTTPException(
+                status_code=e.response.status_code,
+                detail=f"Erreur du service OCR: {e.response.text}"
+            )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur interne du serveur: {str(e)}"
+        )
+    finally:
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
+@app.post("/api/upload/mileage")
+async def upload_mileage(file: UploadFile = File(...)):
+    """
+    Endpoint pour l'extraction du kilométrage à partir d'une image.
+    """
+    try:
+        # Sauvegarde temporaire du fichier
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            temp_file.write(await file.read())
+            temp_file_path = temp_file.name
+
+        try:
+            # Envoi au service OCR
+            async with httpx.AsyncClient() as client:
+                with open(temp_file_path, "rb") as f:
+                    files = {"file": (file.filename, f, file.content_type)}
+                    response = await client.post(
+                        f"{FLEET_API_URL}/OCR/Mileage",
+                        files=files,
+                        timeout=30.0
+                    )
+                    response.raise_for_status()
+                    return response.json()
+
+        except httpx.RequestError as e:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Erreur de connexion au service OCR: {str(e)}"
+            )
+        except httpx.HTTPStatusError as e:
+            raise HTTPException(
+                status_code=e.response.status_code,
+                detail=f"Erreur du service OCR: {e.response.text}"
+            )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur interne du serveur: {str(e)}"
+        )
+    finally:
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
 
 
 if __name__ == "__main__":
