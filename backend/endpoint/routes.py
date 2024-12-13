@@ -12,7 +12,7 @@ from services.calculation import (
     diesel_consumption_estimation
 )
 from services.db.reservation import get_reservations_for_user, rent_vehicle
-from services.db.maintenance import get_mileage_for_vehicle, update_mileage_for_vehicle
+from services.db.maintenance import get_mileage_for_vehicle, maintenance_needed, update_mileage_for_vehicle
 import datetime
 import os
 
@@ -210,10 +210,18 @@ def get_mileage_for_vehicle_route(vehicle_id: int):
         raise BadRequest("ID véhicule invalide")
     return get_mileage_for_vehicle(vehicle_id)
 
-@app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<str:source>', methods=['POST'])
+@app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<source>', methods=['POST'])
 def updateMileageForVehicle(vehicle_id: int, mileage: int, source: str):
     return update_mileage_for_vehicle(vehicle_id, mileage, source)
 
+
+@app.route('/Maintenance/Needed/<vehicle_type>/<int:mileage>', methods=['GET'])
+def maintenance_needed_route(vehicle_type: str, mileage: int):
+    """Vérifier si un entretien est nécessaire pour un type de véhicule et un kilométrage donné."""
+    if mileage <= 0:
+        raise BadRequest("Le kilométrage doit être positif")
+
+    return maintenance_needed(vehicle_type, mileage)
 
 # ---------------------------------------------Calcul-------------------------------------
 
