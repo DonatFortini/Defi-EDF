@@ -1,10 +1,12 @@
 from app import app
+from services.db.export import export_vehicle_mileage_to_csv, export_reservations_to_csv
 from services.db.fleet_management import get_fleet, get_fleet_dashboard
 from services.db.user import get_users, get_user_by_id, get_user_name_by_id
 from services.OCR import getPlateNumber, getMileage
 from services.calculation import get_CO2_estimation, get_electricity_cost_estimation, get_gasoline_cost_estimation, get_diesel_cost_estimation, electrical_consumption_estimation, gasoline_consumption_estimation, diesel_consumption_estimation
 from services.db.reservation import get_reservations_for_user, rent_vehicle
 from services.db.maintenance import get_mileage_for_vehicle, update_mileage_for_vehicle
+
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -41,12 +43,12 @@ def getUserNameById(id):
     return get_user_name_by_id(id)
 
 
-
 # ---------------------------------------------Reservation--------------------------------------
 
 @app.route('/Reservation/<int:userId>', methods=['GET'])
 def getReservationsForUser(userId: int):
     return get_reservations_for_user(userId)
+
 
 @app.route('/Reservation/Rent/<int:userId>/<int:vehicleId>/<start_date>/<end_date>/<int:nb_places_reservees>', methods=['POST'])
 def rentVehicle(userId: int, vehicleId: int, start_date: str, end_date: str, nb_places_reservees: int):
@@ -65,11 +67,13 @@ def getMileage(filepath: str):
 
 # ---------------------------------------------Maintenance-------------------------------------
 
+
 @app.route('/Maintenance/Mileage/<int:vehicle_id>', methods=['GET'])
 def getMileageForVehicle(vehicle_id: int):
     return get_mileage_for_vehicle(vehicle_id)
 
-@app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<str:source>', methods=['POST'])
+
+@app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<source>', methods=['POST'])
 def updateMileageForVehicle(vehicle_id: int, mileage: int, source: str):
     return update_mileage_for_vehicle(vehicle_id, mileage, source)
 
@@ -111,3 +115,25 @@ def getDieselConsumptionEstimation(distance: float):
     return diesel_consumption_estimation(distance)
 
 # ---------------------------------------------Disaster--------------------------------------
+
+
+# ---------------------------------------------Export--------------------------------------
+
+@app.route('/Export/VehicleMileage', methods=['GET'])
+def exportVehicleMileageToCsv():
+    return export_vehicle_mileage_to_csv()
+
+
+@app.route('/Export/VehicleMileage/<output_directory>', methods=['GET'])
+def exportVehicleMileageToCsvWithOutputDirectory(output_directory: str):
+    return export_vehicle_mileage_to_csv(output_directory)
+
+
+@app.route('/Export/Reservations', methods=['GET'])
+def exportReservationsToCsv():
+    return export_reservations_to_csv()
+
+
+@app.route('/Export/Reservations/<output_directory>', methods=['GET'])
+def exportReservationsToCsvWithOutputDirectory(output_directory: str):
+    return export_reservations_to_csv(output_directory)
