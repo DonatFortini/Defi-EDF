@@ -67,6 +67,19 @@ class HomeContent extends StatelessWidget {
             );
           },
         ),
+        SizedBox(height: 10),
+        buildQuickActionCard(
+          context,
+          'Relevé Kilométrique',
+          Icons.speed,
+          Colors.red,
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ScannerPage()),
+            );
+          },
+        ),
         SizedBox(height: 20),
       ],
     );
