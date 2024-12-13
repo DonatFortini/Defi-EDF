@@ -3,7 +3,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app import app
 from services.db.export import export_vehicle_mileage_to_csv, export_all_reservations_to_csv
 from services.db.fleet_management import get_fleet, get_fleet_dashboard
-from services.db.user import authenticate_user, get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
+from services.db.user import authenticate_user, get_user_info, get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
 from services.OCR import getPlateNumber, getMileage
 from services.calculation import (
     get_CO2_estimation, get_electricity_cost_estimation,
@@ -92,6 +92,13 @@ def get_user_by_id_route(id):
     if id <= 0:
         raise BadRequest("ID utilisateur invalide")
     return get_user_by_id(id)
+
+@app.route('/User/<int:id>/Info', methods=['GET'])
+def get_user_info_route(id):
+    """Récupérer les informations d'un utilisateur par ID."""
+    if id <= 0:
+        raise BadRequest("ID utilisateur invalide")
+    return get_user_info(id)
 
 
 @app.route('/User/<int:id>/Name', methods=['GET'])

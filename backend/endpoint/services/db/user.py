@@ -31,6 +31,14 @@ def user_exists(id: int)-> bool:
     except Exception as e:
         dbpool.query("ROLLBACK")
 
+def get_user_info(id: int):
+    try:
+        result = dbpool.query("SELECT * FROM utilisateur WHERE id = %s", (id,))
+        return result
+    except Exception as e:
+        dbpool.query("ROLLBACK")
+        raise e
+
 def validate_user(email: str, password: str) -> bool:
     try:
         result = dbpool.query("SELECT * FROM utilisateur WHERE email = %s AND password = %s", (email, password))
