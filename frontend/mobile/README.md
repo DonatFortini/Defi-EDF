@@ -1,60 +1,16 @@
-# Frontend README
+# mobile
 
-## Structure du Projet
+A new Flutter project.
 
-La partie frontend de ce projet est organisée comme suit :
+## Getting Started
 
-```
-lib
-├── core
-│   ├── providers
-│   ├── platform_aware.dart
-│   └── responsive_layout.dart
-├── main.dart
-├── layout
-├── screens
-│
-├── services
-│   └── data_services.dart
-└── widgets
-```
+This project is a starting point for a Flutter application.
 
-### Dossiers et Fichiers
+A few resources to get you started if this is your first Flutter project:
 
-- **core**: Contient les fonctionnalités de base telles que la prise en compte des plateformes et la gestion des mises en page réactives.
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
--**providers**:
-
-- **main.dart**: Le point d'entrée de l'application.
-
-- **layout**: Disposition des différent widgets sur les pages
-
-- **screens**: Contient les différentes écrans de l'application.
-
-- **services**: Contient les classes de service pour la gestion des données.
-
-- **widgets**: Contient des widgets réutilisables.
-
-## Pour Commencer
-
-Pour commencer avec la partie frontend de ce projet, suivez ces étapes :
-
-1. **Installer les Dépendances** :
-
-   ```bash
-   flutter pub get
-   ```
-
-2. **Lancer l'Application** :
-   web :
-   ```bash
-   flutter run -d chrome
-   ```
-   android :
-   ```bash
-   flutter run -d android
-   ```
-   ios :
-   ```bash
-   flutter run -d ios
-   ```
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
