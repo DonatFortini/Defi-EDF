@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/ui/view/community_view.dart';
+import 'package:mobile/ui/view/disaster_view.dart';
 import 'package:mobile/ui/view/home_view.dart';
 import 'package:mobile/ui/view/profile_view.dart';
 import 'package:mobile/ui/utils/modal_actions.dart';
+import 'package:mobile/ui/view/rental_view.dart';
+import 'package:mobile/ui/view/scanner_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,11 +20,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/': (context) => MainScreen(),
-        '/rental': (context) => Container(),
+        '/rental': (context) => RentalView(),
         '/ecology': (context) => Container(),
-        '/disaster': (context) => Container(),
-        '/scanner': (context) => Container(),
-        '/community': (context) => Container(),
+        '/disaster': (context) => DisasterView(),
+        '/scanner': (context) => ScannerView(isMileageScan: false),
+        '/community': (context) => CommunityView(),
         '/profile': (context) => ProfileView(),
       },
       initialRoute: '/',
@@ -43,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeView(),
     Container(),
     Container(),
-    Container(),
+    CommunityView(),
     ProfileView(),
   ];
 
