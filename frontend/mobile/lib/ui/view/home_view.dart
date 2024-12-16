@@ -5,8 +5,8 @@ import 'package:mobile/ui/widgets/home/fleet_stats.dart';
 import 'package:mobile/core/widgets/quick_action_section.dart';
 import 'package:mobile/core/widgets/recent_activity_list.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
+class HomeView extends StatefulWidget {
+  HomeView({super.key});
 
   final List<CardProps> quickActions = [
     CardProps(
@@ -24,10 +24,10 @@ class HomePage extends StatefulWidget {
   ];
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
               'Historique récent',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            RecentActivityList(),
+            Card(child: RecentActivityList()),
           ],
         ),
       ),
