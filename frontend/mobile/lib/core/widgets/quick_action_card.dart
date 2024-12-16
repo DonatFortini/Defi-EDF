@@ -19,10 +19,10 @@ class QuickActionCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const QuickActionCard({
-    Key? key,
+    super.key,
     required this.cardProps,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
