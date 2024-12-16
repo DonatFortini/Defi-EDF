@@ -24,7 +24,7 @@ class RentalCalendarPicker extends StatelessWidget {
     );
 
     // Fonction pour sélectionner la date de début
-    Future<void> _selectStartDate() async {
+    Future<void> selectStartDate() async {
       final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: rentalProvider.startDate ?? DateTime.now(),
@@ -39,7 +39,7 @@ class RentalCalendarPicker extends StatelessWidget {
     }
 
     // Fonction pour sélectionner la date de fin
-    Future<void> _selectEndDate() async {
+    Future<void> selectEndDate() async {
       if (rentalProvider.startDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -89,10 +89,10 @@ class RentalCalendarPicker extends StatelessWidget {
             hintText: 'JJ/MM/AAAA',
             suffixIcon: IconButton(
               icon: const Icon(Icons.calendar_today),
-              onPressed: _selectStartDate,
+              onPressed: selectStartDate,
             ),
           ),
-          onTap: _selectStartDate,
+          onTap: selectStartDate,
         ),
         const SizedBox(height: 10),
         TextField(
@@ -104,10 +104,10 @@ class RentalCalendarPicker extends StatelessWidget {
             hintText: 'JJ/MM/AAAA',
             suffixIcon: IconButton(
               icon: const Icon(Icons.calendar_today),
-              onPressed: _selectEndDate,
+              onPressed: selectEndDate,
             ),
           ),
-          onTap: _selectEndDate,
+          onTap: selectEndDate,
         ),
         if (isSameDay) ...[
           const SizedBox(height: 10),

@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:frontend/models/user.dart';
 import 'package:frontend/services/auth_service.dart';
-import 'package:frontend/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {

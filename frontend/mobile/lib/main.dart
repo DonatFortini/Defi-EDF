@@ -3,10 +3,8 @@ import 'package:frontend/core/providers/community_provider.dart';
 import 'package:frontend/core/providers/disaster_provider.dart';
 import 'package:frontend/core/providers/ecology_provider.dart';
 import 'package:frontend/core/providers/login_provider.dart';
-import 'package:frontend/screens/login_page.dart';
+import 'package:frontend/features/home/presentation/page/home_page.dart';
 import 'package:provider/provider.dart';
-import 'package:frontend/core/responsive_layout.dart';
-import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/core/providers/rental_provider.dart';
 import 'package:frontend/core/providers/scanner_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -60,9 +58,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: authProvider.isAuthenticated
-                ? ResponsiveLayout(mobile: MobileHomePage())
-                : const LoginPage(),
+            home: HomePage(),
           );
         },
       ),

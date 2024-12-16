@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/layout/faulty_comp_content.dart';
 import 'package:frontend/screens/disaster_page.dart';
 import 'package:frontend/screens/faulty_comp_page.dart';
 import 'package:frontend/screens/rental_page.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/disaster_page.dart';
 import 'package:frontend/screens/scanner_page.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/core/providers/fleet_stats_provider.dart';
