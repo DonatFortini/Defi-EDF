@@ -5,18 +5,18 @@ class MapLocation {
   final LatLng? endLocation;
   final String startAddress;
   final String endAddress;
-  final List<LatLng> routePoints;
-  final String routeDuration;
-  final String routeDistance;
+  final List<LatLng>? routePoints;
+  final double? routeDistance;
+  final double? routeDuration;
 
   const MapLocation({
     this.startLocation,
     this.endLocation,
     this.startAddress = '',
     this.endAddress = '',
-    this.routePoints = const [],
-    this.routeDuration = '',
-    this.routeDistance = '',
+    this.routePoints,
+    this.routeDistance,
+    this.routeDuration,
   });
 
   MapLocation copyWith({
@@ -25,8 +25,8 @@ class MapLocation {
     String? startAddress,
     String? endAddress,
     List<LatLng>? routePoints,
-    String? routeDuration,
-    String? routeDistance,
+    double? routeDistance,
+    double? routeDuration,
   }) {
     return MapLocation(
       startLocation: startLocation ?? this.startLocation,
@@ -34,8 +34,8 @@ class MapLocation {
       startAddress: startAddress ?? this.startAddress,
       endAddress: endAddress ?? this.endAddress,
       routePoints: routePoints ?? this.routePoints,
-      routeDuration: routeDuration ?? this.routeDuration,
       routeDistance: routeDistance ?? this.routeDistance,
+      routeDuration: routeDuration ?? this.routeDuration,
     );
   }
 }

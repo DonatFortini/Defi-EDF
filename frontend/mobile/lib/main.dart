@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mobile/domain/rental_controller.dart';
 import 'package:mobile/ui/view/community_view.dart';
 import 'package:mobile/ui/view/disaster_view.dart';
 import 'package:mobile/ui/view/home_view.dart';
@@ -18,9 +20,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('fr', 'FR')],
       routes: {
         '/': (context) => MainScreen(),
-        '/rental': (context) => RentalView(),
+        '/rental': (context) => RentalView(controller: RentalController()),
         '/ecology': (context) => Container(),
         '/disaster': (context) => DisasterView(),
         '/scanner': (context) => ScannerView(isMileageScan: false),

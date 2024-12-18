@@ -13,6 +13,12 @@ class CalendarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('CalendarSection - build');
+    print('Start date: ${controller.booking.startDate}');
+    print('End date: ${controller.booking.endDate}');
+
+    final DateTime defaultMinDate = DateTime.now();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,13 +31,15 @@ class CalendarSection extends StatelessWidget {
           label: 'Date de début',
           value: controller.booking.startDate,
           onChanged: controller.setStartDate,
+          minDate: defaultMinDate, // Date minimale = aujourd'hui
         ),
         const SizedBox(height: 10),
         DatePickerField(
           label: 'Date de fin',
           value: controller.booking.endDate,
           onChanged: controller.setEndDate,
-          minDate: controller.booking.startDate,
+          // Si pas de date de début, utiliser aujourd'hui comme minimum
+          minDate: controller.booking.startDate ?? defaultMinDate,
         ),
         if (_isSameDay(
           controller.booking.startDate,
@@ -46,9 +54,7 @@ class CalendarSection extends StatelessWidget {
           const SizedBox(height: 10),
           DurationSelector(
             controller: controller,
-            selectedDuration:
-                controller.booking.interventionDuration ??
-                '2 h', // Valeur par défaut si null
+            selectedDuration: controller.booking.interventionDuration ?? '2 h',
             onDurationChanged: controller.setInterventionDuration,
           ),
         ],
