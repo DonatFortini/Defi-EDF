@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/domain/rental_controller.dart';
 import 'package:mobile/ui/view/community_view.dart';
 import 'package:mobile/ui/view/disaster_view.dart';
+import 'package:mobile/ui/view/ecology_view.dart';
+import 'package:mobile/ui/view/faulty_comp_view.dart';
 import 'package:mobile/ui/view/home_view.dart';
 import 'package:mobile/ui/view/profile_view.dart';
 import 'package:mobile/ui/utils/modal_actions.dart';
@@ -29,11 +31,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MainScreen(),
         '/rental': (context) => RentalView(controller: RentalController()),
-        '/ecology': (context) => Container(),
+        '/ecology': (context) => EcologyView(),
         '/disaster': (context) => DisasterView(),
         '/scanner': (context) => ScannerView(isMileageScan: false),
         '/community': (context) => CommunityView(),
         '/profile': (context) => ProfileView(),
+        '/faulty_comp': (context) => FaultyCompView(),
       },
       initialRoute: '/',
     );
@@ -53,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
   // Liste des widgets principaux correspondant aux items de la bottom nav
   static final List<Widget> _widgetOptions = <Widget>[
     HomeView(),
-    Container(),
+    EcologyView(),
     Container(),
     CommunityView(),
     ProfileView(),
