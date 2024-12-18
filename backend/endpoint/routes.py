@@ -4,7 +4,7 @@ from app import app
 from services.db.export import export_vehicle_mileage_to_csv, export_all_reservations_to_csv
 from services.db.fleet_management import get_fleet, get_fleet_dashboard
 from services.db.user import authenticate_user, get_user_info, get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
-from services.OCR import getPlateNumber, getMileage
+from endpoint.services.CNNPrediction import getPlateNumber, getMileage
 from services.calculation import (
     get_CO2_estimation, get_electricity_cost_estimation,
     get_gasoline_cost_estimation, get_diesel_cost_estimation,
@@ -93,6 +93,7 @@ def get_user_by_id_route(id):
         raise BadRequest("ID utilisateur invalide")
     return get_user_by_id(id)
 
+
 @app.route('/User/<int:id>/Info', methods=['GET'])
 def get_user_info_route(id):
     """Récupérer les informations d'un utilisateur par ID."""
@@ -133,22 +134,23 @@ def validate_user_route():
 
     return validate_user(email, password)
 
+
 @app.route('/auth/login', methods=['POST'])
 def login():
     try:
         data = request.json
         if not data or 'email' not in data or 'password' not in data:
             return jsonify({"error": "Email et mot de passe requis"}), 400
-            
+
         print(data)
 
         result = authenticate_user(data['email'], data['password'])
-        
+
         if result["success"]:
             return jsonify(result["data"])
         else:
             return jsonify({"error": result["error"]}), 401
-            
+
     except Exception as e:
         print(f"Erreur lors de la connexion: {str(e)}")
         return jsonify({"error": "Erreur serveur interne"}), 500
@@ -183,6 +185,7 @@ def rent_vehicle_route(userId: int, vehicleId: int, start_date: str, end_date: s
             "La date de début doit être avant ou égale à la date de fin")
 
     return rent_vehicle(userId, vehicleId, start_date, end_date, nb_places_reservees)
+
 
 @app.route('/Reservation/Check/<int:userId>', methods=['GET'])
 def does_user_have_reservation_route(userId: int):
@@ -257,6 +260,7 @@ def get_mileage_for_vehicle_route(vehicle_id: int):
     if vehicle_id <= 0:
         raise BadRequest("ID véhicule invalide")
     return get_mileage_for_vehicle(vehicle_id)
+
 
 @app.route('/Maintenance/Mileage/<int:vehicle_id>/<int:mileage>/<source>', methods=['POST'])
 def updateMileageForVehicle(vehicle_id: int, mileage: int, source: str):
@@ -352,4 +356,3 @@ def export_reservations_with_directory_route(output_directory: str):
         raise BadRequest(f"Répertoire de sortie invalide: {str(e)}")
 
     return export_all_reservations_to_csv(output_directory)
-
