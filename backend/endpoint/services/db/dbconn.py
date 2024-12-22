@@ -2,7 +2,9 @@ import psycopg2
 
 class DBpool:
     def __init__(self):
-        self.conn = psycopg2.connect("dbname=fleet_management user=postgres password=motdepasse host=localhost port=19876")
+        # change the host and port to localhost if you are running the database locally
+        self.conn = psycopg2.connect(
+            "dbname=fleet_management user=postgres password=motdepasse host=172.17.0.2 port=5432")
         self.cur = self.conn.cursor()
 
     def query(self, query_string, params=None):
@@ -23,5 +25,6 @@ class DBpool:
     def __del__(self):
         self.cur.close()
         self.conn.close()
+
 
 dbpool = DBpool()
