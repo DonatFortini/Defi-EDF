@@ -44,7 +44,7 @@ async def get_dashboard():
         try:
             response = await client.get(f"{FLEET_API_URL}/Fleet/dashboard")
             response.raise_for_status()
-            
+
             # Les données correspondent déjà au format attendu, pas besoin de transformation
             return DashboardResponse(**response.json())
 
@@ -69,13 +69,13 @@ async def get_dashboard_with_stats():
         try:
             response = await client.get(f"{FLEET_API_URL}/Fleet/dashboard")
             response.raise_for_status()
-            
+
             data = response.json()
-            
+
             # Ajout de statistiques calculées
             total_vehicles = data["dispo"]["free"] + data["dispo"]["leased"]
             total_by_propulsion = data["propulsion"]["electric"] + data["propulsion"]["thermic"]
-            
+
             return {
                 **data,  # Données originales
                 "statistics": {
@@ -90,7 +90,7 @@ async def get_dashboard_with_stats():
                 status_code=503,
                 detail=f"Erreur de connexion au service Fleet: {str(e)}"
             )
-        
+
 @app.post("/api/public/login")
 async def login(login_data: LoginRequest):
    try:
@@ -110,7 +110,7 @@ async def login(login_data: LoginRequest):
 
            # Retourner la réponse de l'API privée
            return response.json()
-           
+
    except Exception as e:
        raise HTTPException(
            status_code=500,

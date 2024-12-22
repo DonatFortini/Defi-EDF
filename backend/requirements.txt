@@ -45,3 +45,4 @@ fastapi
 uvicorn
 flask
 httpx
+python-multipart
