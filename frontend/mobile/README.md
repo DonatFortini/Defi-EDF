@@ -42,19 +42,41 @@ Pour commencer avec la partie frontend de ce projet, suivez ces étapes :
 1. **Installer les Dépendances** :
 
    ```bash
+   flutter clean
    flutter pub get
    ```
 
 2. **Lancer l'Application** :
    web :
+
    ```bash
    flutter run -d chrome
    ```
+
    android :
+
    ```bash
    flutter run -d android
    ```
+
    ios :
+
    ```bash
    flutter run -d ios
    ```
+
+3. **Récupérer l'APK** :
+
+   Construire l'image Docker :
+
+   ```bash
+   docker build -t edf-app-image .
+   ```
+
+   Récupérer l'APK dans le conteneur Docker :
+
+   ```
+   /app/app-release.apk
+   ```
+
+   Exécuter l'APK dans un émulateur.
