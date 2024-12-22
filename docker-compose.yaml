@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: ./database # Supposant que votre Dockerfile et dump.sql sont dans un dossier 'database'
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fleet_management
+    ports:
+      - "10000:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/endpoint/Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/fleet_management
+    depends_on:
+      - db
+
+  api:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    environment:
+      - API_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/fleet_management
+    depends_on:
+      - backend
+      - db
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

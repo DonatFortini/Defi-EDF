@@ -34,17 +34,17 @@ def get_fleet_dashboard():
         # Requête pour compter les véhicules par type de propulsion
         req_type = """
             SELECT p.id_propulsion, COUNT(*)
-            FROM vehicule v 
-            INNER JOIN modele m ON v.id_modele = m.id_modele 
+            FROM vehicule v
+            INNER JOIN modele m ON v.id_modele = m.id_modele
             INNER JOIN propulsion p ON m.id_propulsion = p.id_propulsion
             GROUP BY p.id_propulsion
         """
 
         # Requête pour les véhicules actuellement loués
         req_leased = """
-            SELECT COUNT(*) 
-            FROM vehicule v 
-            INNER JOIN reservation r ON v.id_vehicule = r.id_vehicule 
+            SELECT COUNT(*)
+            FROM vehicule v
+            INNER JOIN reservation r ON v.id_vehicule = r.id_vehicule
             WHERE NOW() BETWEEN date_debut AND date_fin
         """
 
@@ -82,5 +82,5 @@ def get_fleet_dashboard():
         }
 
     except Exception as e:
-        dbpool.execute("ROLLBACK")  # Utiliser execute au lieu de query
+        dbpool.query("ROLLBACK")  # Utiliser execute au lieu de query
         raise e

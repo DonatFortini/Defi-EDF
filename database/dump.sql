@@ -322,7 +322,9 @@ CREATE TABLE public.utilisateur (
     id_utilisateur integer NOT NULL,
     nom_utilisateur character varying(100) NOT NULL,
     password character varying(255),
-    email varchar(100)
+    email varchar(100),
+    token varchar(255),
+    refresh_token varchar(255)
 );
 
 

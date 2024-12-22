@@ -31,7 +31,7 @@ class LoginResponse(BaseModel):
 app = FastAPI()
 
 # Configuration
-FLEET_API_URL = "http://127.0.0.1:5000"  # À ajuster selon votre configuration
+FLEET_API_URL = "http://backend:5000"  # À ajuster selon votre configuration
 TIMEOUT = 10.0
 
 @app.get("/api/public/dashboard", response_model=DashboardResponse)
