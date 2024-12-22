@@ -4,7 +4,7 @@ from app import app
 from services.db.export import export_vehicle_mileage_to_csv, export_all_reservations_to_csv
 from services.db.fleet_management import get_fleet, get_fleet_dashboard
 from services.db.user import authenticate_user, get_user_info, get_users, get_user_by_id, get_user_name_by_id, user_exists, validate_user
-from endpoint.services.CNNPrediction import getPlateNumber, getMileage
+from services.CNNPrediction import getPlateNumber, getMileage
 from services.calculation import (
     get_CO2_estimation, get_electricity_cost_estimation,
     get_gasoline_cost_estimation, get_diesel_cost_estimation,

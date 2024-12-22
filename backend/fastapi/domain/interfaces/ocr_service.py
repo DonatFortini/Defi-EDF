@@ -1,5 +1,4 @@
 from config.settings import Settings
-from domain.interfaces.ocr_service import OCRServiceInterface
 from fastapi import HTTPException, UploadFile
 import httpx
 import tempfile

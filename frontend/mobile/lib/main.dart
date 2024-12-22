@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// domain packages
 import 'package:mobile/domain/rental_controller.dart';
+
+// components packages
 import 'package:mobile/ui/view/community_view.dart';
 import 'package:mobile/ui/view/disaster_view.dart';
 import 'package:mobile/ui/view/ecology_view.dart';
@@ -10,14 +15,23 @@ import 'package:mobile/ui/view/profile_view.dart';
 import 'package:mobile/ui/utils/modal_actions.dart';
 import 'package:mobile/ui/view/rental_view.dart';
 import 'package:mobile/ui/view/scanner_view.dart';
+import 'package:mobile/ui/view/auth_view.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  final bool isAuthenticated = await checkAuthState();
+  runApp(MyApp(isAuthenticated: isAuthenticated));
+}
+
+Future<bool> checkAuthState() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('isAuthenticated') ?? false;
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isAuthenticated;
+
+  const MyApp({super.key, required this.isAuthenticated});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: const [Locale('fr', 'FR')],
       routes: {
-        '/': (context) => MainScreen(),
+        '/': (context) => isAuthenticated ? MainScreen() : AuthView(),
         '/rental': (context) => RentalView(controller: RentalController()),
         '/ecology': (context) => EcologyView(),
         '/disaster': (context) => DisasterView(),
@@ -37,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/community': (context) => CommunityView(),
         '/profile': (context) => ProfileView(),
         '/faulty_comp': (context) => FaultyCompView(),
+        '/auth': (context) => AuthView(),
       },
       initialRoute: '/',
     );

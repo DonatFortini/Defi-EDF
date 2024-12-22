@@ -1,4 +1,4 @@
-from torch import tload
+from torch import load as tload
 from sys import path as spath
 from os import path as ospath
 

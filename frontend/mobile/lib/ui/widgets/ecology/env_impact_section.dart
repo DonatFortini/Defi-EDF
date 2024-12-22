@@ -29,28 +29,26 @@ class EnvironmentalImpactSection extends StatelessWidget {
               ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             ...[
-                  'Zéro émission locale',
-                  'Coût de fonctionnement réduit',
-                  'Moins de dépendance aux carburants fossiles',
-                  'Technologie en constante amélioration',
-                ]
-                .map(
-                  (advantage) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.check_circle,
-                          color: Colors.green[700],
-                          size: 20,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(child: Text(advantage)),
-                      ],
+              'Zéro émission locale',
+              'Coût de fonctionnement réduit',
+              'Moins de dépendance aux carburants fossiles',
+              'Technologie en constante amélioration',
+            ].map(
+              (advantage) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green[700],
+                      size: 20,
                     ),
-                  ),
-                )
-                .toList(),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(advantage)),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
