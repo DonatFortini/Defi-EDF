@@ -18,7 +18,7 @@ backend
 
 ### `fastapi`
 
-Le dossier `fastapi` contient les API développées avec FastAPI pour interagir avec le frontend. Vous trouverez plus de détails dans le fichier [readme](api/readme.md).
+Le dossier `fastapi` contient les API développées avec FastAPI pour interagir avec le frontend. Vous trouverez plus de détails dans le fichier [readme](fastapi/readme.md).
 
 ### `core`
 
