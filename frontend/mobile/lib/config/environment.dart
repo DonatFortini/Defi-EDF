@@ -10,7 +10,7 @@ class EnvironmentConfig {
     switch (_environment) {
       case Environment.dev:
         _apiUrl =
-            'https://9a00-2a01-cb16-204b-b98-ac62-7a9-19f1-1eb0.ngrok-free.app';
+            'http://10.0.2.2:8000';
         break;
       case Environment.staging:
         _apiUrl = 'https://staging-api.edf.fr';

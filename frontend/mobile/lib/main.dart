@@ -17,7 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _requestLocationPermission();
   EnvironmentConfig.initialize(Environment.dev);
-  WidgetsFlutterBinding.ensureInitialized(); // Très important !
+  WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferences.getInstance();
   runApp(MyApp());
 }
