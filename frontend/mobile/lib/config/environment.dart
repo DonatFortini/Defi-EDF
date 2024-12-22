@@ -9,7 +9,7 @@ class EnvironmentConfig {
     _environment = env;
     switch (_environment) {
       case Environment.dev:
-        _apiUrl = 'http://172.17.0.3:8000';
+        _apiUrl = 'http://0.0.0.0:8000';
         break;
       case Environment.staging:
         _apiUrl = 'https://staging-api.edf.fr';
